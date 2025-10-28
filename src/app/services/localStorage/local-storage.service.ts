@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Login } from '../../auth/models/login';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
+  private readonly prefix = environment.app_prefix
+  private readonly key = `${this.prefix}_userData`
+
   ///Almacena una variable y objeto en local storage
   setData(key: string, value: unknown): void { localStorage.setItem(key, JSON.stringify(value)); }
 
@@ -24,7 +28,7 @@ export class LocalStorageService {
   }
 
   setUser(login: Login) {
-    this.setData('userData', login);
+    this.setData(this.key, login);
   }
 
   deleteData(key: string): void { localStorage.removeItem(key); }
@@ -33,7 +37,7 @@ export class LocalStorageService {
   deleteAll(): void { localStorage.clear(); }
 
   getUser(): Login | null {
-    return this.getData<Login>('userData');
+    return this.getData<Login>(this.key);
   }
 
   getUserToken(): string | null {
@@ -47,7 +51,7 @@ export class LocalStorageService {
   }
 
   deleteUser() {
-    this.deleteData('userData')
+    this.deleteData(this.key)
   }
 
   esUsuarioExterno() {
@@ -58,11 +62,11 @@ export class LocalStorageService {
     return this.getUser()?.user.user_type === 'INTERNO'
   }
 
-  esAdmin(){
-    return this.getUser()?.user.email.toLowerCase() ==='admin@sagem.com'
+  esAdmin() {
+    return this.getUser()?.user.email.toLowerCase() === 'admin@sagem.com'
   }
 
-  getRolUser(){
+  getRolUser() {
     return this.getUser()?.roles[0]
   }
 }

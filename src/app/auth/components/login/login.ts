@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginCredentials } from '../../models/login-credentials';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,8 @@ export class Login {
   rfc=''
   password=''
   loading = false
+
+  app_name= environment.app_name
 
   //services
   private router = inject(Router);
