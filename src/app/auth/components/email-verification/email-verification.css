@@ -1,0 +1,117 @@
+/* Estilos adicionales para verificación de email */
+
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.display-1 {
+  font-size: 4rem;
+}
+
+.spinner-border {
+  animation-duration: 0.75s;
+}
+
+/* Animación de entrada */
+.card {
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación para iconos */
+.bi-check-circle-fill {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.bi-x-circle-fill {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+  .display-1 {
+    font-size: 3rem;
+  }
+
+  .card-body {
+    padding: 2rem !important;
+  }
+
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .display-1 {
+    font-size: 2.5rem;
+  }
+
+  .card-body {
+    padding: 1.5rem !important;
+  }
+
+  .card-header {
+    padding: 1.5rem !important;
+  }
+
+  .card-title {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* Transiciones suaves */
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Estilos para alerts */
+.alert {
+  border: none;
+  border-radius: 0.5rem;
+}
+
+/* Footer */
+.card-footer {
+  background-color: #f8f9fa !important;
+}

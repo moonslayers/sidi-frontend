@@ -1,0 +1,76 @@
+<button class="btn toggler btn-primary scale-025 m-1 p-0 px-2 shadow-sm d-lg-none" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+  <i class="bi bi-list fs-4 fw-bold"></i>
+</button>
+<div class="offcanvas offcanvas-size-sm view-height offcanvas-start bg-primary text-bg-primary" tabindex="-1"
+  id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col px-2 text-end">
+        <button type="button" class="btn scale-025" data-bs-dismiss="offcanvas" aria-label="Close">
+          <i class="bi bi-x-lg text-light shadow fw-bold"></i>
+        </button>
+      </div>
+    </div>
+    <img [src]="logo_url" class="img-fluid" alt="Logo de la aplicación">
+    <div class="text-end">
+      <app-version></app-version>
+    </div>
+  </div>
+  <div class="offcanvas-body">
+    <div class="list-group list-group-flush">
+      @for (option of menuOptions; track option) {
+      @if (hasPermiso(option.permiso)) {
+      <app-menu-option [menu_option]="option"></app-menu-option>
+      }
+      }
+
+      <p class="m-0 px-3 text-center mt-5 text-bold scale-1 pointer text-white">
+        <i class="bi bi-box-arrow-in-left"></i>
+        <span class="p-2 pb-5 animate__animated logout" tabindex="0" (click)="sign_out()" (keyup.enter)="sign_out()">
+          Cerrar sesión
+        </span>
+      </p>
+    </div>
+    <div class="col-12 mt-5 text-center">
+      <app-version></app-version>
+    </div>
+  </div>
+</div>
+<div class="row p-0 m-0">
+  <div class="col-auto p-0 m-0">
+    <div class="col-auto bg-primary p-2 big-menu d-none d-lg-block"
+      [ngClass]="{'big-menu':!menuExpanded,'big-menu-expanded':menuExpanded}">
+      <div class="list-group list-group-flush pointer" (mouseenter)="menuExpanded=true">
+        <a
+          class="list-group-item list-group-item-action bg-primary text-light border-none text-center image-container pointer">
+          <img [src]="logo_url" alt="Almacenes" [ngClass]="{'logo-icon':!menuExpanded, 'logo-expanded':menuExpanded}">
+          <div class="text-end">
+            <app-version></app-version>
+          </div>
+        </a>
+        @for (option of menuOptions; track option) {
+        @if (hasPermiso(option.permiso)) {
+        <app-menu-option [menu_option]="option" [showLabels]="false" icon_size="fs-5" label_size=""
+          [menuExpanded]="menuExpanded" />
+        }
+        }
+        <p class="m-0 px-3 text-center mt-5 text-bold scale-1 pointer text-white">
+          <i class="bi bi-box-arrow-in-left fs-5"></i>
+          <a class="p-2 pb-5 animate__animated logout" [class.animate__fadeIn]="menuExpanded" [hidden]="!menuExpanded"
+            (click)="sign_out()" (keyup.enter)="sign_out()" tabindex="0">
+            Cerrar sesión
+          </a>
+        </p>
+      </div>
+      <div class="col-12 mt-5 text-center">
+        <app-version></app-version>
+      </div>
+    </div>
+  </div>
+  <div class="col m-0 view-height bg">
+    <div class="container-fluid p-0 position-relative z-1">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<app-vanilla-dialog [show]="showDialog"
+  [body]="dialogData?.body"
+  [title]="dialogData?.title"
+  [size]="dialogData?.size"
+  [respNot]="dialogData?.respNo"
+  [respYes]="dialogData?.respYes"
+  [tipo]="dialogData?.tipo"
+></app-vanilla-dialog>
+@if (loader) {
+  <app-loader></app-loader>
+}
+<app-bootstrap-toast
+  [(show)]="showToast"
+  [message]="toastData?.message"
+  [autohide]="toastData?.autohide"
+  [delay]="toastData?.delay ?? 0"
+  [image]="toastData?.image"
+  [timeAgo]="toastData?.timeAgo"
+  [title]="toastData?.title"
+  />
+<router-outlet></router-outlet>

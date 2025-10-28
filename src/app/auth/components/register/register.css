@@ -1,0 +1,45 @@
+/* Estilos adicionales para el formulario de registro */
+
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.input-group-text {
+  border-right: none;
+  min-width: 45px;
+  justify-content: center;
+}
+
+.form-control {
+  border-left: none;
+}
+
+/* Animación para la alerta de éxito */
+.alert-success {
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Estilos responsive */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 1.5rem !important;
+  }
+
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}

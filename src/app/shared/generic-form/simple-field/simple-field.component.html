@@ -1,0 +1,26 @@
+<div [class]="inputGroup?'input-group':'col p-0'">
+  @if (label) {
+    <span [class]="style?.label??(inputGroup?'input-group-text':'fw-bold ps-1')" [class.text-s]="sm">
+      {{label}}@if (validator?.required) {
+      <span class="fw-bolder text-danger">*</span>
+    }
+  </span>
+}
+<input [type]="type" [class]="style?.input??'form-control'"
+  [class.form-control-sm]="sm"
+  [placeholder]="placeholder??label??''"
+  [(ngModel)]="value"
+  (ngModelChange)="valueChange.emit(value)"
+  #inputModel="ngModel"
+  [class.is-invalid]="inputModel.touched && (inputModel.invalid || errorFeedback)"
+  [required]="!!validator?.required"
+  [email]="!!validator?.email"
+  [minlength]="validator?.minLength??null"
+  [maxlength]="validator?.maxLength??null"
+  [pattern]="validator?.pattern??''"
+  [disabled]="validator?.disabled??false"
+  (blur)="setErrorMessage()">
+<div class="invalid-feedback">
+  {{errorFeedback}}
+</div>
+</div>

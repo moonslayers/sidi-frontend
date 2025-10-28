@@ -1,0 +1,29 @@
+<!-- Marcadores de las parciciones, los puedes agregar si quieres, su
+css tambien esta comentado y para que se vean se tienen que descomentar -->
+
+<div class="row justify-content-between align-items-center text-end mb-2">
+  <div class="col text-muted px-1">
+    0
+  </div>
+  @for (p of partitions; track p) {
+    <div class="col text-muted px-1">
+      {{ p }}
+    </div>
+  }
+</div>
+
+@for (item of data; track item) {
+  <div class="bar-container">
+    <div class="label">{{ item.label }}</div>
+    <div class="bar-wrapper">
+      <div class="bar" [style.width.%]="(item.value / maxValue) * 100" [class]="'bg-'+mainColor"></div>
+      @if (!item.pipe) {
+        <span class="value">
+          {{ item.value }}
+        </span>
+      } @else {
+        {{item.value | currency}}
+      }
+    </div>
+  </div>
+}

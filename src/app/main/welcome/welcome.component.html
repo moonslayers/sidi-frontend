@@ -1,0 +1,122 @@
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-lg-10 col-xl-8">
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-5">
+          <!-- Header con mensaje de bienvenida -->
+          <div class="text-center mb-5">
+            <div class="mb-4">
+              <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
+            </div>
+            <h1 class="display-4 fw-bold text-primary mb-3">{{ welcomeMessage }}</h1>
+            <p class="lead text-muted">
+              @if (isInternalUser()) {
+                <span class="badge bg-success fs-6">
+                  <i class="bi bi-building me-2"></i>Usuario Interno
+                </span>
+              } @else {
+                <span class="badge bg-info fs-6">
+                  <i class="bi bi-globe me-2"></i>Usuario Externo
+                </span>
+              }
+            </p>
+          </div>
+
+          <!-- Sección de información según tipo de usuario -->
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 border-primary">
+                <div class="card-body text-center">
+                  <i class="bi bi-speedometer2 text-primary mb-3" style="font-size: 2.5rem;"></i>
+                  <h5 class="card-title">Panel Principal</h5>
+                  <p class="card-text">
+                    @if (isInternalUser()) {
+                      Accede a las herramientas de administración y gestión del sistema.
+                    } @else {
+                      Gestiona tus solicitudes y consulta el estado de tus trámites.
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 border-success">
+                <div class="card-body text-center">
+                  <i class="bi bi-clipboard-check text-success mb-3" style="font-size: 2.5rem;"></i>
+                  <h5 class="card-title">Actividad Reciente</h5>
+                  <p class="card-text">
+                    Revisa las últimas actualizaciones y actividades en tu cuenta.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            @if (isInternalUser()) {
+              <div class="col-md-6 mb-4">
+                <div class="card h-100 border-warning">
+                  <div class="card-body text-center">
+                    <i class="bi bi-people text-warning mb-3" style="font-size: 2.5rem;"></i>
+                    <h5 class="card-title">Gestión de Usuarios</h5>
+                    <p class="card-text">
+                      Administra las cuentas y permisos de los usuarios del sistema.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <div class="card h-100 border-danger">
+                  <div class="card-body text-center">
+                    <i class="bi bi-graph-up text-danger mb-3" style="font-size: 2.5rem;"></i>
+                    <h5 class="card-title">Estadísticas</h5>
+                    <p class="card-text">
+                      Visualiza métricas y reportes del rendimiento del sistema.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <div class="col-md-6 mb-4">
+                <div class="card h-100 border-info">
+                  <div class="card-body text-center">
+                    <i class="bi bi-file-earmark-text text-info mb-3" style="font-size: 2.5rem;"></i>
+                    <h5 class="card-title">Mis Solicitudes</h5>
+                    <p class="card-text">
+                      Crea nuevas solicitudes y sigue el estado de las existentes.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <div class="card h-100 border-secondary">
+                  <div class="card-body text-center">
+                    <i class="bi bi-clock-history text-secondary mb-3" style="font-size: 2.5rem;"></i>
+                    <h5 class="card-title">Historial</h5>
+                    <p class="card-text">
+                      Consulta el historial completo de tus solicitudes y acciones.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Información de la sesión -->
+          <div class="alert alert-light border-0 text-center mt-4">
+            <i class="bi bi-info-circle text-primary me-2"></i>
+            <small>
+              Sesión iniciada como <strong>{{ userName }}</strong>
+              @if (isInternalUser()) {
+                - Acceso con privilegios de administrador
+              } @else {
+                - Acceso de cliente externo
+              }
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

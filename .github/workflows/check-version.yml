@@ -1,0 +1,73 @@
+name: Check Version Update
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  check-version:
+    name: Verify version.ts changes
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Check for version.ts changes
+      id: check_version
+      run: |
+        # Obtener los archivos modificados en el PR
+        git fetch origin ${{ github.base_ref }}
+        CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} HEAD)
+        
+        # Verificar si version.ts está en la lista de archivos modificados
+        if echo "$CHANGED_FILES" | grep -q "version.ts"; then
+          echo "✅ version.ts ha sido modificado"
+          echo "has_version_update=true" >> $GITHUB_OUTPUT
+        else
+          echo "❌ version.ts NO ha sido modificado"
+          echo "has_version_update=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Comment on PR if version.ts not updated
+      if: steps.check_version.outputs.has_version_update == 'false'
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        script: |
+          const message = `⚠️ **Revisión requerida**: No se detectaron cambios en \`version.ts\`
+
+          Para contribuir a este repositorio, debes actualizar la versión siguiendo los estándares definidos en [VERSIONS_GUIDE.md](https://github.com/${{ github.repository }}/blob/main/VERSIONS_GUIDE.md).
+
+          **Pasos requeridos:**
+          1. Actualiza el archivo \`version.ts\` incrementando la versión según el tipo de cambios
+          2. Sigue el formato especificado en la guía
+          3. Commit y push de los cambios
+
+          Una vez actualizado el archivo, este check pasará automáticamente.`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: message
+          });
+
+    - name: Add review with request changes
+      if: steps.check_version.outputs.has_version_update == 'false'
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        script: |
+          github.rest.pulls.createReview({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number,
+            body: '❌ **Changes requested**: Se requiere actualización de versión en `version.ts` según VERSIONS_GUIDE.md',
+            event: 'REQUEST_CHANGES'
+          });
+
+    - name: Success message
+      if: steps.check_version.outputs.has_version_update == 'true'
+      run: echo "✅ Validación exitosa version.ts ha sido actualizado"

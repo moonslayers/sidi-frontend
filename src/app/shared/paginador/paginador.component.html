@@ -1,0 +1,60 @@
+@if (default && total_pages>0) {
+  <div class="row">
+    <div class="col text-center">
+      <div class="btn-group shadow-sm">
+        <button type="button" class="btn btn-light" [class.btn-sm]="sm" (click)="cambiar_page(1)" (keyup.enter)="cambiar_page(1)">
+          <span aria-hidden="true">&laquo;</span>
+        </button>
+        @for (page of paginador_view; track page) {
+          <button type="button" class="btn"
+            [class.btn-sm]="sm" [ngClass]="{'btn-light':page!==page_actual,'btn-primary':page===page_actual}"
+            (click)="cambiar_page(page)" (keyup.enter)="cambiar_page(page)">
+            {{page}}
+          </button>
+        }
+        <button type="button" class="btn btn-light" [class.btn-sm]="sm" (click)="cambiar_page(paginador.length)" (keyup.enter)="cambiar_page(paginador.length)">
+          <span aria-hidden="true">&raquo;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-between pe-2 ps-2">
+    @if (orderLabels.length>0) {
+      <div class="col-auto">
+        <select class='form-select shadow-sm' [class.form-select-sm]="sm" [(ngModel)]="selected_order" (change)="actualizar_tabla()" (keyup.enter)="actualizar_tabla()">
+          @for (label of orderLabels; track label; let i = $index) {
+            <option [value]="i+1">{{label}}</option>
+          }
+        </select>
+      </div>
+    }
+    <div class="col-auto">
+      <select class="form-select shadow-sm" [class.form-select-sm]="sm" [(ngModel)]="per_page" (change)="actualizar_tabla()" (keyup.enter)="actualizar_tabla()">
+        <option value="5" selected>Num por pagina</option>
+        @for (option of page_options; track option) {
+          <option [value]="option">{{option}}</option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-end fw-light">
+      <span class="text-s fw-lighter">Total results:</span>
+      <span class="text-s ">{{total_items}}</span>
+    </div>
+  </div>
+}
+@if (short) {
+  <div class="row justify-content-between">
+    <div class="col-auto scale-05">
+      <button class="btn btn-transparent text-primary" (click)="cambiar_page(page_actual-1)" (keyup.enter)="cambiar_page(page_actual-1)">
+        <i class="bi bi-caret-left-fill fs-4"></i>
+      </button>
+    </div>
+    <div class="col-auto scale-05">
+      <button class="btn btn-transparent text-primary" (click)="cambiar_page(page_actual+1)" (keyup.enter)="cambiar_page(page_actual+1)">
+        <i class="bi bi-caret-right-fill fs-4"></i>
+      </button>
+    </div>
+  </div>
+}

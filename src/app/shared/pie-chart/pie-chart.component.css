@@ -1,0 +1,24 @@
+.pie-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pie-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.legend-left .pie-body {
+  flex-direction: row-reverse;
+}
+
+.legend-right .pie-body {
+  flex-direction: row;
+}
+
+.legend-bottom .pie-body {
+  flex-direction: column;
+}

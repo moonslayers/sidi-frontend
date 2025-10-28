@@ -1,0 +1,54 @@
+@if (!menu_option.sub_menu) {
+<a [routerLink]="menu_option.router_link"
+  class="list-group-item list-group-item-action text-light border-0 d-flex align-items-center position-relative border-bottom"
+  [class]="classColor" [class.text-bold]="isRouteActive(menu_option.route_include)"
+  [class.tooltip-container]="menu_option.tooltip && !menuExpanded">
+  <i class="bi" [ngClass]="[icon_size, icon() || '']"></i>
+  @if (menuExpanded) {
+  <span class="ms-3 animate__animated animate__fadeIn" [class]="label_size">
+    {{ menu_option.label }}
+  </span>
+  }
+  @if (menu_option.tooltip && !menuExpanded) {
+  <div class="tooltip-text">{{ menu_option.tooltip }}</div>
+  }
+</a>
+} @else {
+<a class="list-group-item list-group-item-action bg-primary text-light border-0 d-flex align-items-center border-bottom"
+  [class.text-bold]="isRouteActive(menu_option.route_include)" role="button" tabindex="0"
+  [attr.aria-expanded]="isExpanded" (click)="toggle()" (keydown.enter)="toggle()"
+  (keydown.space)="toggle(); $event.preventDefault()">
+  <i class="bi" [ngClass]="[icon_size, icon() || '']"></i>
+  @if (menuExpanded) {
+  <span class="ms-3">{{ menu_option.label }}</span>
+  <i class="bi ms-auto" [ngClass]="isExpanded ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
+  }
+</a>
+
+@if (menuExpanded) {
+<div class="list-group list-group-flush sub-menu" [class.show]="isExpanded">
+  @for (option of menu_option.sub_menu; track option) {
+  @if (hasPermiso(option.permiso)) {
+  <app-menu-option [menu_option]="option" [menuExpanded]="menuExpanded" classColor="bg-secondary"
+    [label_size]="'ms-4'"></app-menu-option>
+  }
+  }
+</div>
+} @else {
+<!-- En modo compacto, no mostrar submenú en el DOM (mejor rendimiento y accesibilidad) -->
+@if (isExpanded) {
+<div class="list-group list-group-flush sub-menu-compact">
+  @for (option of menu_option.sub_menu; track option) {
+  @if (hasPermiso(option.permiso)) {
+  <a [routerLink]="option.router_link"
+    class="list-group-item list-group-item-action bg-secondary text-light border-0 text-center py-2"
+    [class.text-bold]="isRouteActive(option.route_include)">
+    <i class="bi" [ngClass]="['fs-5', option.icon || option.icon_fill || '']"></i>
+    <div class="tooltip-text">{{ option.label }}</div>
+  </a>
+  }
+  }
+</div>
+}
+}
+}

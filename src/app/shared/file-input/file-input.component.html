@@ -1,0 +1,39 @@
+<div [class]="divClass??'input-group shadow-sm '" [class.input-group-sm]="sm">
+  @if (label) {
+    <label [class]="labelClass??'input-group-text fw-bold'" [for]="'formFile'">
+      {{label}}
+    </label>
+  }
+  <input [disabled]="disabled" #inputFile [class]="inputClass??'form-control'" type="file" id="formFile" (change)="setFormData($event)"
+    [multiple]="multiple" [accept]="accept">
+  @if (url && showSimpleDownload) {
+    <a class="btn btn-secondary pointer text-light fw-bold" tabindex="0" (click)="visualize()" (keyup.enter)="visualize()"><i class="bi bi-download"></i></a>
+  }
+  @if (!automaticSave && showButton) {
+    <button class="btn btn-primary" (click)="upload()" (keyup.enter)="upload()" [disabled]="(foreign_key && !id) || !formData.has(this.key)">
+      Subir
+    </button>
+  }
+</div>
+@if (url && showDownload && isImage(file)) {
+  <div class="row justify-content-center mt-2">
+    @if (isImage(file)) {
+      <div class="col-12 col-sm-10 col-md-9 col-lg-8 text-center">
+        <div class="fw-bold">Imagen Subida:</div>
+        @if (!isImageChanging) {
+          <img [src]="utils.fileUrlInLine(url)" class="img-fluid img-thumbnail pointer" alt="Imagen subida: {{file?.name || 'vista previa'}}">
+        }
+      </div>
+    }
+  </div>
+}
+@if (url && showDownload && isPDFFile(file)) {
+  <div class="row justify-content-center mt-2">
+    <div class="col-12 col-sm-10 col-md-9 col-lg-8 text-center">
+      <div class="fw-bold">PDF:</div>
+      @if (refreshIframe) {
+        <iframe [src]="utils.fileUrlInLineSanatized(url)" class="pdf-container"></iframe>
+      }
+    </div>
+  </div>
+}

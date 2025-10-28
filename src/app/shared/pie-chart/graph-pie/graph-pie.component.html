@@ -1,0 +1,17 @@
+<table class="charts-css pie hide-data">
+  <tbody>
+    @for (item of data; track item; let i = $index) {
+      <tr>
+        <td
+        [ngStyle]="{
+          '--start': item.start,
+          '--end': item.end,
+          '--color': item.color
+        }"
+          >
+          <span class="data">${{ item.value / 1000 }}K</span>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

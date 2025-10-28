@@ -1,0 +1,15 @@
+@if (show) {
+  <div class='col vw-100 vh-100 top-left-front blur-s p-4 ps-2 overflow-scroll main-back z-9'
+    [ngClass]="{ 'fade-out': !showClass, 'fade-in': showClass }">
+    <div class='row justify-content-end'>
+      <div class='col-auto'>
+        <button class='btn-close pointer fs-5  scale-1 bg-info p-2 round-xl'
+          (click)="cerrarDesdeBoton()">
+        </button>
+      </div>
+    </div>
+    <div class="row justify-conten-center p-0 m-0">
+      <ng-content></ng-content>
+    </div>
+  </div>
+}

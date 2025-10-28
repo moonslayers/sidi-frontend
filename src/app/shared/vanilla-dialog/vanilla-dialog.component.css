@@ -1,0 +1,59 @@
+.frontal-blur-transparent-sm {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(3px);
+    overflow-x: hidden;
+    z-index: 999999;
+}
+.fs-0{
+    font-size: 60px;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out;
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        height: 100%;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    to {
+        opacity: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+    }
+}
+.fade-in {
+    animation: fadeIn 0.2s ease-in-out;
+    opacity: 1;
+    height: 100%;
+    margin: 5px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+    }
+    to {
+        opacity: 1;
+        height: 100%;
+        margin: 5px;
+        padding: 5px;
+    }
+}

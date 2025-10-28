@@ -1,0 +1,71 @@
+<div class="container-fluid py-2 pt-3 mt-2">
+  <div class="row">
+    <div class="col">
+      <h5><b>{{title}}</b></h5>
+    </div>
+    <div class="col-auto">
+      <a class="text-primary pointer" tabindex="0" (click)="showSearch=!showSearch" (keyup.enter)="showSearch=!showSearch"><u>Filtrar</u></a>
+    </div>
+  </div>
+</div>
+<div class="table-responsive no-expanded shadow pb-3 px-2 mb-2" [class.d-none]="expand">
+  @if (dataSource.length>0) {
+    <table [class]="tableClass" [class.table-sm]='sm'>
+      @if (caption) {
+        <caption>{{caption}}</caption>
+      }
+      <thead>
+        <tr class="sticky-top z-1">
+          @for (key of keys; track key) {
+            <th class="pointer" tabindex="0" (click)="sortByKey(key)" (keyup.enter)="sortByKey(key)">
+              {{key|titlecase}}
+            </th>
+          }
+          @if (urlRoute) {
+            <th class="sticky-right"></th>
+          }
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (showSearch) {
+          <tr>
+            @for (key of keys; track key) {
+              <td class="sticky-top">
+                <input class="form-control form-control-sm" [placeholder]="key|titlecase" [(ngModel)]="filtros[key]" (ngModelChange)="filtrar()">
+              </td>
+            }
+            @if (urlRoute) {
+              <td class="sticky-right">
+              </td>
+            }
+            <td>
+            </td>
+          </tr>
+        }
+        @for (row of dataSource; track row) {
+          <tr>
+            @for (key of keys; track key) {
+              <td>
+                {{valueClean(row[key])}}
+              </td>
+            }
+            @if (urlRoute) {
+              <td class="sticky-right">
+                <button class="btn btn-sm btn-info shadow" [routerLink]="urlRoute+row[id]">
+                  <i class="bi bi-eye-fill"></i>
+                </button>
+              </td>
+            }
+            <td>
+              <ng-content select="[row-td]"></ng-content>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+  @if (dataSource.length===0) {
+    <p class="h4 fw-lighter text-center p-3">No hay registros.</p>
+  }
+</div>

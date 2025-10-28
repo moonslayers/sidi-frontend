@@ -1,0 +1,24 @@
+<ng-content></ng-content>
+@if (!edit && showEditButton) {
+  <button class="btn btn-primary mx-1" (click)="editChange.emit(true)">
+    <i class="bi bi-pencil-fill"></i>
+  </button>
+}
+@if (showSaveButton && edit) {
+  <button class="btn btn-primary mx-1" [disabled]="isSaveDisabled" (click)="saveButtonClick.emit()">
+    @if (isLoading) {
+      <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+    }
+    @if (!isLoading) {
+      <i class="bi bi-floppy-fill"></i>
+    }
+  </button>
+}
+<button class="btn btn-danger mx-1" (click)="deleteButtonClick.emit()">
+  @if (isDeleting) {
+    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+  }
+  @if (!isDeleting) {
+    <i class="bi bi-trash-fill"></i>
+  }
+</button>

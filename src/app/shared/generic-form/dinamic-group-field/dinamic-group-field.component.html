@@ -1,0 +1,60 @@
+<div [class]="style?.div??'container-fluid px-2 pb-4'">
+  <div class="row">
+    <div class="col align-self-end px-3">
+      <span [class]="style?.title??defaultTitleClass">{{title}}</span>
+    </div>
+    <div [class]="addButton?.style?.div??'col-auto'">
+      <app-button
+        [style]="addButton?.style"
+        [class]="addButton?.style?.button"
+        [text]="addButton?.text"
+        defaultButtonClass="btn btn-success scale-05"
+        defaultIconClass="bi bi-plus-circle-fill"
+        (click)="addForm()"
+        [disabled]="!!disabled"
+        />
+    </div>
+  </div>
+  <hr [class]="style?.border??defaultBorderClass">
+  @for (form of formRows; track form) {
+    <div class="row justify-content-evenly px-5 py-1 border-bottom">
+      @for (field of form.fields; track field) {
+        <div [class]="field.style?.div??'col-12 col-sm-6 col-md-4 col-lg p-1'">
+          <app-form-field
+            [field]="field"
+            [style]="field.style"
+            (fieldChange)="onFieldChange($event, form, field)"
+            />
+        </div>
+      }
+      <div class="col-12 col-sm-auto align-self-end p-1">
+        @if (id) {
+          <button
+            [class]="saveButton?.style?.button??'btn btn-primary scale-05 mx-1'"
+            (click)="saveForm(form)" (keyup.enter)="saveForm(form)"
+            [disabled]="!!disabled"
+            >
+            @if (form.loading) {
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            }
+            @if (!form.loading) {
+              <i [class]="saveButton?.style?.icon??'bi bi-floppy-fill'"></i>
+            }
+          </button>
+        }
+        <button
+          [disabled]="!!disabled"
+          [class]="deleteButton?.style?.button??'btn btn-danger scale-05 mx-1'"
+          (click)="deleteForm(form)" (keyup.enter)="deleteForm(form)"
+          >
+          @if (form.deleteLoading) {
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          }
+          @if (!form.deleteLoading) {
+            <i [class]="deleteButton?.style?.icon??'bi bi-x-lg'"></i>
+          }
+        </button>
+      </div>
+    </div>
+  }
+</div>

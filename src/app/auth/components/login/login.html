@@ -1,0 +1,47 @@
+<div class="container-fluid p-1">
+    <img src="assets/logo_baja_california.png" class="img-fluid mt-3 rounded" alt="...">
+    <h3 class="text-center text-primary mt-2"><b>SIDI</b></h3>
+    <div class="row px-2 mt-3 pb-2">
+        <div class="col-12 mb-3">
+            <div class="form-floating has-validation">
+                <input type="text" class="form-control text-uppercase" id="floatingInput" placeholder="RFC"
+                    [(ngModel)]="rfc" #rfcInput="ngModel" required
+                    [class.is-invalid]="rfcInput.touched && rfcInput.invalid">
+                <label for="floatingInput">RFC</label>
+                <div id="floatingInputFeedback" class="invalid-feedback text-primary fw-bold">
+                    Ingresa un RFC válido (Ej: ABCD123456XYZ).
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating has-validation">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                    [(ngModel)]="password" #passwordInput="ngModel" required
+                    [class.is-invalid]="passwordInput.touched && passwordInput.invalid" (keyup.enter)="submit()">
+                <label for="floatingPassword">Contraseña</label>
+                <div id="floatingInputFeedback" class="invalid-feedback text-primary fw-bold">
+                    Ingresa una contraseña.
+                </div>
+            </div>
+        </div>
+        <div class="col-12 text-center mt-3">
+            <button class="btn btn-secondary"
+                [disabled]="!(rfcInput.valid && passwordInput.valid) || loading"
+                (click)="submit()">
+                @if (loading) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Procesando...
+                } @else {
+                    Ingresar
+                }
+            </button>
+        </div>
+        <div class="col-12 mt-2 text-s text-center">
+            <a routerLink="/recovery" class="text-secondary">¿Olvidaste tu contraseña?</a><br>
+            <small class="text-muted">¿No tienes cuenta?</small>
+            <a routerLink="/register" class="text-primary fw-semibold">
+                Regístrate aquí
+            </a>
+        </div>
+    </div>
+</div>

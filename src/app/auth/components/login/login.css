@@ -1,0 +1,102 @@
+/* --- Logo y Título --- */
+.login-logo {
+    max-width: 120px;
+    height: auto;
+}
+.card-login{
+    min-height: 20.0rem;
+    min-width: 20rem;
+}
+
+
+.login-title {
+    color: var(--primary);
+    font-size: 1.8rem;
+    /* Ligeramente más pequeño para mejor proporción */
+    margin-bottom: 0 !important;
+}
+
+/* --- Campos del Formulario (Mejorados) --- */
+.login-input {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    /* Asegura que el input no se solape con el label */
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+}
+
+.login-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--primary) 25%, transparent);
+    background-color: #fff;
+}
+
+/* Estilos para el input-group */
+.input-group {
+    border-radius: 10px;
+    overflow: hidden;
+    /* Asegura que los bordes redondeados se apliquen */
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-right: none;
+    color: #6c757d;
+}
+
+/* Ajuste para que el label flote sobre el input-group */
+.form-floating>.input-group>.form-control:focus~label,
+.form-floating>.input-group>.form-control:not(:placeholder-shown)~label,
+.form-floating>.input-group>.form-select~label {
+    color: var(--primary);
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+
+/* --- Botón de Login --- */
+.btn-login {
+    background: linear-gradient(45deg, var(--primary), color-mix(in srgb, var(--primary) 75%, white));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px 0 color-mix(in srgb, var(--primary) 60%, black);
+}
+
+.btn-login:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--primary) 70%, black);
+    background: linear-gradient(45deg, color-mix(in srgb, var(--primary) 75%, white), var(--primary));
+}
+
+.btn-login:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* --- Enlaces --- */
+.login-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.login-link:hover {
+    color: color-mix(in srgb, var(--primary) 80%, black);
+    text-decoration: underline;
+}
+
+/* --- Mejoras de Responsividad --- */
+@media (max-width: 576px) {
+    .login-title {
+        font-size: 1.5rem;
+    }
+
+    .login-form-container {
+        margin: 5px;
+        padding: 2rem !important;
+    }
+}

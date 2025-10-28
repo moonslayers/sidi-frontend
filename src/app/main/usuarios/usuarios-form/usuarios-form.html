@@ -1,0 +1,295 @@
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-9 col-md-10">
+            <div class="card main-form-card shadow-lg">
+                <!-- Header -->
+                <div class="card-header bg-primary text-white p-4 border-0">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-person-plus-fill fs-2"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h2 class="card-title mb-1 fw-bold">{{ titulo }}</h2>
+                            <p class="card-text mb-0 opacity-75">
+                                @if (isEditMode) {
+                                Modifique los datos del usuario existente
+                                } @else {
+                                Complete los datos para registrar un nuevo usuario
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-4">
+                    <!-- Estado de Carga -->
+                    @if (loading) {
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <h5 class="text-muted">Cargando datos del usuario...</h5>
+                    </div>
+                    }
+
+                    <!-- Estado de Éxito -->
+                    @else if (submitted) {
+                    <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert">
+                        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                        <div class="flex-grow-1">
+                            <h6 class="alert-heading mb-1">¡Operación completada!</h6>
+                            <p class="mb-0">Usuario {{ isEditMode ? 'actualizado' : 'guardado' }} con éxito</p>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Cerrar alerta"></button>
+                    </div>
+                    }
+
+                    <!-- Formulario Principal -->
+                    @if (!loading) {
+                    <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+
+                        <!-- Sección 1: Información Principal -->
+                        <section class="form-section-card mb-4">
+                            <div class="section-header h4">
+                                <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                                <span class="mb-0 fw-semibold">Información Principal</span>
+                            </div>
+                            <div class="section-body">
+                                <div class="row g-3">
+                                    <!-- Campo RFC -->
+                                    <div class="col-lg-6">
+                                        <label for="rfc" class="form-label fw-semibold">RFC <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group input-group-lg has-validation">
+                                            <span class="input-group-text bg-light border-end-0"><i
+                                                    class="bi bi-card-text text-muted"></i></span>
+                                            <input type="text" id="rfc" class="form-control border-start-0"
+                                                formControlName="rfc" placeholder="Ej: ABCD123456XYZ"
+                                                [ngClass]="{ 'is-invalid': f['rfc'].invalid && (f['rfc'].dirty || f['rfc'].touched) }">
+                                        </div>
+                                        @if (f['rfc'].invalid && (f['rfc'].dirty || f['rfc'].touched)) {
+                                        <div class="invalid-feedback d-block">
+                                            @if (f['rfc'].errors?.['required']) { <div><i
+                                                    class="bi bi-exclamation-triangle-fill me-1"></i>El RFC es
+                                                obligatorio.</div> }
+                                            @if (f['rfc'].errors?.['pattern']) { <div><i
+                                                    class="bi bi-exclamation-triangle-fill me-1"></i>El formato del RFC
+                                                no es válido.</div> }
+                                        </div>
+                                        }
+                                    </div>
+                                    <!-- Campo Nombre -->
+                                    <div class="col-lg-6">
+                                        <label for="name" class="form-label fw-semibold">Nombre Completo <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group input-group-lg has-validation">
+                                            <span class="input-group-text bg-light border-end-0"><i
+                                                    class="bi bi-person text-muted"></i></span>
+                                            <input type="text" id="name" class="form-control border-start-0"
+                                                formControlName="name" placeholder="Juan Pérez"
+                                                [ngClass]="{ 'is-invalid': f['name'].invalid && (f['name'].dirty || f['name'].touched) }">
+                                        </div>
+                                        @if (f['name'].invalid && (f['name'].dirty || f['name'].touched)) {
+                                        <div class="invalid-feedback d-block">
+                                            @if (f['name'].errors?.['required']) { <div><i
+                                                    class="bi bi-exclamation-triangle-fill me-1"></i>El nombre es
+                                                obligatorio.</div> }
+                                            @if (f['name'].errors?.['minlength']) { <div><i
+                                                    class="bi bi-exclamation-triangle-fill me-1"></i>El nombre debe
+                                                tener al menos 3 caracteres.</div> }
+                                        </div>
+                                        }
+                                    </div>
+                                    <!-- Campo Email -->
+                                    <div class="col">
+                                        <label for="email" class="form-label fw-semibold">Correo Electrónico <small
+                                                class="text-muted">(opcional)</small></label>
+                                        <div class="input-group input-group-lg has-validation">
+                                            <span class="input-group-text bg-light border-end-0"><i
+                                                    class="bi bi-envelope text-muted"></i></span>
+                                            <input type="email" id="email" class="form-control border-start-0"
+                                                formControlName="email" placeholder="correo@ejemplo.com"
+                                                [ngClass]="{ 'is-invalid': f['email'].invalid && (f['email'].dirty || f['email'].touched) }">
+                                        </div>
+                                        @if (f['email'].invalid && (f['email'].dirty || f['email'].touched)) {
+                                        <div class="invalid-feedback d-block"><i
+                                                class="bi bi-exclamation-triangle-fill me-1"></i>El formato del correo
+                                            no es válido.</div>
+                                        }
+                                        <small class="form-text text-muted"><i class="bi bi-info-circle me-1"></i>Usado
+                                            únicamente para notificaciones.</small>
+
+                                        <!-- Email Status Component (solo en modo edición y si tiene email) -->
+                                        @if (isEditMode && usuarioEmail) {
+                                        <div class="mt-3">
+                                            <app-email-status [email]="usuarioEmail" [showResendButton]="true" [compact]="false"></app-email-status>
+                                        </div>
+                                        }
+                                    </div>
+                                    <!-- Campo Tipo de Usuario (solo admin) -->
+                                    @if (storage.getRolUser()?.includes('admin')) {
+                                    <div class="col-lg-6">
+                                        <div id="user-type-label" class="form-label fw-semibold">Tipo de Usuario <span
+                                                class="text-danger">*</span></div>
+                                        <div class="p-3 bg-light rounded border" role="radiogroup"
+                                            aria-labelledby="user-type-label">
+                                            @for (type of userTypes; track type.value) {
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" [id]="type.value"
+                                                    [value]="type.value" formControlName="user_type">
+                                                <label class="form-check-label" [for]="type.value"><i
+                                                        class="bi bi-person-circle me-1"></i>{{ type.label }}</label>
+                                            </div>
+                                            }
+                                        </div>
+                                        @if (f['user_type'].invalid && (f['user_type'].dirty && f['user_type'].touched))
+                                        {
+                                        <div class="text-danger small mt-1"><i
+                                                class="bi bi-exclamation-triangle-fill me-1"></i>Debe seleccionar un
+                                            tipo de usuario.</div>
+                                        }
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Sección 2: Roles y Permisos (solo admin) -->
+                        @if (storage.getRolUser()?.includes('admin')) {
+                        <section class="form-section-card mb-4">
+                            <div class="section-header">
+                                <i class="bi bi-shield-check-fill text-primary me-2"></i>
+                                <h4 class="mb-0 fw-semibold">Roles y Permisos</h4>
+                            </div>
+                            <div class="section-body">
+                                <div class="row g-3">
+                                    <div class="col-lg-6">
+                                        <label for="role" class="form-label fw-semibold">Rol del Usuario <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group input-group-lg has-validation">
+                                            <span class="input-group-text bg-light border-end-0"><i
+                                                    class="bi bi-shield-check text-muted"></i></span>
+                                            <select id="role" class="form-select border-start-0" formControlName="role"
+                                                (change)="onRolChange($event)"
+                                                [ngClass]="{ 'is-invalid': f['role'].invalid && (f['role'].dirty || f['role'].touched) }">
+                                                <option value="" disabled>Seleccionar rol...</option>
+                                                @for (rol of rolesDisponibles; track rol.name) {
+                                                <option [value]="rol.name">{{ rol.name }}</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        @if (f['role'].invalid && (f['role'].dirty || f['role'].touched)) {
+                                        <div class="invalid-feedback d-block"><i
+                                                class="bi bi-exclamation-triangle-fill me-1"></i>Debe seleccionar un
+                                            rol.</div>
+                                        }
+                                    </div>
+                                </div>
+                                @if (permisosRol && permisosRol.length > 0) {
+                                <div class="mt-4">
+                                    <h6 class="fw-semibold mb-3"><i
+                                            class="bi bi-key-fill text-success me-2"></i>Permisos del Rol: {{
+                                        rolSeleccionado }}</h6>
+                                    <div class="row g-2">
+                                        @for (permiso of permisosRol; track permiso.name) {
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="d-flex align-items-center p-2 bg-white rounded border">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <span class="small">{{ permiso.name }}</span>
+                                            </div>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </section>
+                        }
+
+                        <!-- Sección 3: Roles Actuales (solo modo edición) -->
+                        @if (isEditMode && usuarioRoles && usuarioRoles.length > 0) {
+                        <section class="form-section-card mb-4">
+                            <div class="section-header h4">
+                                <i class="bi bi-info-circle-fill text-info me-2"></i>
+                                <span class="mb-0 fw-semibold">Rol Actual del Usuario</span>
+                            </div>
+                            <div class="section-body">
+                                @for (rol of usuarioRoles; track rol.name) {
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-info bg-opacity-25 text-info-emphasis fw-medium me-2"><i
+                                            class="bi bi-person-badge me-1"></i>{{ rol.name }}</span>
+                                    <small class="text-muted">Rol asignado actualmente.</small>
+                                </div>
+                                }
+                                @if (storage.getRolUser()?.includes('admin')) {
+                                <hr class="my-2 opacity-50">
+                                <small class="text-muted"><i class="bi bi-arrow-clockwise me-1"></i>Puede modificar el
+                                    rol seleccionando uno diferente en la sección superior.</small>
+                                }
+                            </div>
+                        </section>
+                        }
+
+                        <!-- Sección 4: Seguridad (solo nuevos usuarios) -->
+                        @if (showPasswordInput) {
+                        <section class="form-section-card mb-4">
+                            <div class="section-header h4">
+                                <i class="bi bi-shield-lock-fill text-primary me-2"></i>
+                                <span class="mb-0 fw-semibold">Seguridad</span>
+                            </div>
+                            <div class="section-body">
+                                <div class="row g-3">
+                                    <div class="col-lg">
+                                        <label for="password" class="form-label fw-semibold">Nueva Contraseña <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group input-group-lg has-validation">
+                                            <span class="input-group-text bg-light border-end-0"><i
+                                                    class="bi bi-lock text-muted"></i></span>
+                                            <input type="password" id="password" class="form-control border-start-0"
+                                                formControlName="password" placeholder="Mínimo 6 caracteres"
+                                                [ngClass]="{ 'is-invalid': f['password'].invalid && (f['password'].dirty || f['password'].touched) }">
+                                        </div>
+                                        @if (f['password'].invalid && (f['password'].dirty || f['password'].touched)) {
+                                        <div class="invalid-feedback d-block">
+                                            @if (f['password'].errors?.['required']) { <div><i
+                                                    class="bi bi-exclamation-triangle-fill me-1"></i>La contraseña es
+                                                obligatoria.</div> }
+                                            @if (f['password'].errors?.['minlength']) { <div><i
+                                                    class="bi bi-exclamation-triangle-fill me-1"></i>La contraseña debe
+                                                tener al menos 6 caracteres.</div> }
+                                            @if (f['password'].errors?.['pattern']) { <div><i
+                                                    class="bi bi-exclamation-triangle-fill me-1"></i>Debe contener
+                                                mayúsculas, minúsculas y números.</div> }
+                                        </div>
+                                        }
+                                        <div class="alert alert-light border-0 mt-2 small"><i
+                                                class="bi bi-info-circle me-1"></i><strong>Requisitos:</strong> Mínimo 6
+                                            caracteres, incluyendo mayúsculas, minúsculas y números.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        }
+
+                        <!-- Botones de Acción -->
+                        <section class="mt-5">
+                            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-end">
+                                <button type="button" class="btn btn-outline-secondary btn-lg px-4" (click)="onCancel()"
+                                    [disabled]="loading">
+                                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-lg px-5"
+                                    [disabled]="usuarioForm.invalid || loading">
+                                    <i class="bi bi-check-circle me-2"></i>{{ textoBoton }}
+                                </button>
+                            </div>
+                        </section>
+                    </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

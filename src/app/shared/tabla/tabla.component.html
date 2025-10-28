@@ -1,0 +1,470 @@
+
+<app-tabla-advanced-search
+  [(show)]="showAdvancedSearch"
+  [advancedSearch]="advancedSearch"
+  [simpleFilteredSearch]="simpleFilteredSearch"
+  [creadoAntesDe]="creadoAntesDe"
+  [creadoDespuesDe]="creadoDespuesDe"
+  (applyFilters)="applyFilters()"
+  (clearFilters)="limpiarFiltros()">
+</app-tabla-advanced-search>
+<div class="container-fluid p-1 pt-2 m-0">
+  @if (!showBarraButtons) {
+    <div class="row my-2">
+      <div class="col-12 col-sm-auto px-4 py-3">
+      </div>
+      @if (title) {
+        <div [class]="titleStyle?.div??'col-auto p-1 me-auto'">
+          <span [class]="titleStyle?.title??'h4 fw-bold text-nowrap'">{{title}}</span>
+        </div>
+      }
+    </div>
+  }
+  @if (showBarraButtons) {
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <div class="row align-items-center g-2">
+          <!-- Título -->
+          @if (title) {
+            <div class="col-12 col-md-auto">
+              <h5 class="card-title mb-0 mb-md-2 mb-lg-0 fw-bold">{{title}}</h5>
+            </div>
+          }
+
+          <!-- Botones de acción principales -->
+          <div class="col-12 col-md-auto ms-md-auto">
+            <div class="d-flex gap-3">
+              @for (button of barraButtons; track button) {
+                <app-button
+                  [style]="button.style"
+                  [text]="button.text"
+                  (clickButtonEvent)="barraButtonClickEvent.emit(button.key)"
+                ></app-button>
+              }
+
+              @if (agregar) {
+                <app-button
+                  [style]="agregarButton.style"
+                  [text]="agregarButton.text"
+                  (click)="agregarEvent()"
+                ></app-button>
+              }
+            </div>
+          </div>
+
+          <!-- Botones de estado y filtros -->
+          <div class="col-12 col-md-auto">
+            <div class="d-flex gap-3" >
+              @if (activos && eliminados && !incluirEliminados) {
+                @if (!status && eliminados) {
+                  <app-button
+                    [style]="activosButton.style"
+                    [text]="activosButton.text"
+                    (click)="verActivos()"
+                  ></app-button>
+                }
+                @if (status && activos) {
+                  <app-button
+                    [style]="eliminadosButton.style"
+                    [text]="eliminadosButton.text"
+                    (click)="verEliminados()"
+                  ></app-button>
+                }
+              }
+
+              @if ((eliminar || restaurar) && useGenericDelete) {
+                @if (status && eliminar) {
+                  <app-button
+                    [style]="eliminarButton.style"
+                    [text]="eliminarButton.text"
+                    (clickButtonEvent)="genericDeleteMultiple()"
+                    [disabled]="selected===0"
+                  ></app-button>
+                }
+                @if (!status && restaurar) {
+                  <app-button
+                    [style]="restaurarButton.style"
+                    [text]="restaurarButton.text"
+                    (clickButtonEvent)="genericDeleteMultiple()"
+                    [disabled]="selected===0"
+                  ></app-button>
+                }
+              }
+
+              @if (showAdvancedButton) {
+                <app-button
+                  [style]="advancedSearchButton.style"
+                  [text]="advancedSearchButton.text"
+                  (clickButtonEvent)="showAdvancedSearch=true"
+                ></app-button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  @if (barraBusqueda) {
+    <div class="row my-3">
+      <div class="col-12 col-md-8 col-lg-6 mx-auto">
+        <div class="input-group input-group-lg">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control border-start-0"
+            placeholder="Buscar palabra clave..."
+            [(ngModel)]="stringSearch"
+            (keyup.enter)="buscar()"
+          >
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="buscar()"
+            (keyup.enter)="buscar()"
+          >
+            Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+  <ng-content></ng-content>
+  @if (dataSource.length>0) {
+    <!-- Vista Desktop - Tabla -->
+    <div class="d-none d-md-block">
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table [class]="tableDefinition.style?.table??'table table-hover table-striped mb-0'">
+        <thead>
+          <tr [class.opacity-30]="isunknownExpanded && isDetailed">
+            @if (checkbox) {
+              <th class="table-cell">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="checkboxAll" (change)="checkAll()">
+                </div>
+              </th>
+            }
+            @for (header of tableDefinition.columns; track header; let i = $index) {
+              <th [class]="isHeader(header) ? (header.style?.th ?? defaultResponsiveClass(i)) : defaultResponsiveClass(i)">
+                <app-tabla-header [header]="header" [(sort)]="sort" [column]="sort.column" (sortChange)="getData()" />
+              </th>
+            }
+            @if (rowButtons.length>0 || (eliminar && rowEliminar) || rowEditar) {
+              <th class="d-table-cell"></th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of dataSource; track row.id) {
+            <tr class="tr-hover" [class.pointer]="isDetailed"
+              [class.opacity-30]="isunknownExpanded && isDetailed && !expandedIds[row.id]"
+              [class.table-secondary]="expandedIds[row.id]">
+              @if (checkbox) {
+                <td class="d-table-cell">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="selectedIds[row.id]" (ngModelChange)="onSelectRow(row)">
+                  </div>
+                </td>
+              }
+              @for (header of tableDefinition.columns; track header; let i = $index) {
+                @if (isHeader(header)) {
+                  <td [class]="header.styleTdFunction ? header.styleTdFunction(row, utils) :  ( header.style?.td ?? defaultResponsiveClass(i) )" tabindex="0" (click)="expand(row)" (keyup.enter)="expand(row)">
+                    @switch (header.pipe) {
+                      @case ('currency') {
+                        <span>{{ rowValue(row,header) | currency }}</span>
+                      }
+                      @case ('uppercase') {
+                        <span>{{ rowValue(row,header) | uppercase }}</span>
+                      }
+                      @case ('lowercase') {
+                        <span>{{ rowValue(row,header) | lowercase }}</span>
+                      }
+                      @case ('date') {
+                        <span>
+                          {{ (rowValue(row,header) | date:(header.dateFormat??defaultDateFormat))??'N/A'}}
+                        </span>
+                      }
+                      @default {
+                        <span class="text-uppercase">{{ (rowValue(row,header) ?? 'N/A') }}</span>
+                      }
+                    }
+                  </td>
+                }
+                @if (isString(header)) {
+                  <td class="text-uppercase" [class]="defaultResponsiveClass(i)" tabindex="0" (click)="expand(row)" (keyup.enter)="expand(row)">
+                    @if (isISODateValue(getRowValue(row,header))) {
+                      <span>
+                        {{ getRowValueAsDate(row,header) | date:defaultDateFormat }}
+                      </span>
+                    } @else {
+                      {{ getRowValue(row,header) ?? 'N/A' }}
+                    }
+                  </td>
+                }
+              }
+              <app-tabla-actions
+                [row]="row"
+                [rowButtons]="rowButtons"
+                [rowEditar]="rowEditar"
+                [rowEliminar]="rowEliminar"
+                [eliminar]="eliminar"
+                [restaurar]="restaurar"
+                [useGenericDelete]="useGenericDelete"
+                [idKey]="idKey"
+                [rowEditarButton]="rowEditarButton"
+                [rowEditarEliminadoButton]="rowEditarEliminadoButton"
+                [rowEliminarButton]="rowEliminarButton"
+                [rowRestaurarButton]="rowRestaurarButton"
+                [rowButtonsStyle]="rowButtonsStyle"
+                (rowEditarClick)="editEvent($event)"
+                (rowEliminarClick)="genericDelete($event)"
+                (rowButtonClickEvent)="onRowButtonClick($event.key, $event.row)">
+              </app-tabla-actions>
+            </tr>
+            @if (isDetailed && detailedDefinition.length>0 && expandedIds[row.id]) {
+              <tr>
+                <td [colSpan]="tableDefinition.columns.length+2" class="p-2 round-l ">
+                  <div class='container-fluid p-1 pb-5 border border-primary border-5 bg-light shadow round-l' style="--bs-border-opacity: 0.5;">
+                    <div class='row justify-content-evenly'>
+                      <div class='col-lg-12 text-center text-blue3 text-bold text-m contenedor'>
+                        Informacion adicional
+                      </div>
+                      @for (header of detailedDefinition; track header) {
+                        <div class='col-11 col-sm-4 col-lg-3 round-s shadow-sm border rounded bg-light p-1 m-2'>
+                          <p class="fw-bolder m-0 p-0">
+                            @if (isHeader(header)) {
+                              <span>
+                                {{header.header}}
+                              </span>
+                            }
+                            @if (isString(header)) {
+                              <span>
+                                {{header.replaceAll('_',' ') | titlecase}}
+                              </span>
+                            }
+                          </p>
+                          <p class="text-m text-left m-0 p-0">
+                            @if (isHeader(header)) {
+                              @switch (header.pipe) {
+                                @case ('currency') {
+                                  <span>{{ rowValue(row,header) | currency }}</span>
+                                }
+                                @case ('uppercase') {
+                                  <span>{{ rowValue(row,header) | uppercase }}</span>
+                                }
+                                @case ('lowercase') {
+                                  <span>{{ rowValue(row,header) | lowercase }}</span>
+                                }
+                                @case ('date') {
+                                  <span>{{ rowValue(row,header) |
+                                  date:(header.dateFormat??defaultDateFormat) }}</span>
+                                }
+                                @default {
+                                  <span>{{ rowValue(row,header) ?? 'N/A' }}</span>
+                                }
+                              }
+                            }
+                            @if (isString(header)) {
+                              {{ getRowValue(row,header)??'N/A' }}
+                            }
+                          </p>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer bg-white">
+        <app-paginador
+          [(data_paginador)]="paginador"
+          (actualizar_tablaChange)="getData()"
+          [total_pages]="total_pages"
+          [(per_page)]="paginador.per_page"
+          [sm]="true"
+          [total_items]="total_items">
+        </app-paginador>
+      </div>
+    </div>
+    </div>
+
+    <!-- Vista Mobile - Cards -->
+    <div class="d-md-none">
+      <div class="row g-3">
+        @for (row of dataSource; track row.id) {
+          <div class="col-12">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <!-- Checkbox y estado -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  @if (checkbox) {
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        [(ngModel)]="selectedIds[row.id]"
+                        (ngModelChange)="onSelectRow(row)"
+                      >
+                    </div>
+                  }
+                  <span class="badge bg-secondary">
+                    {{ row.deleted_at ? 'Eliminado' : 'Activo' }}
+                  </span>
+                </div>
+
+                <!-- Datos principales -->
+                @for (header of tableDefinition.columns.slice(0, 3); track header) {
+                  <div class="mb-2">
+                    <small class="text-muted d-block">
+                      @if (isHeader(header)) {
+                        {{ header.header }}
+                      } @else {
+                        {{ header.replaceAll('_', ' ') | titlecase }}
+                      }
+                    </small>
+                    <div class="fw-semibold">
+                      @if (isHeader(header)) {
+                        @switch (header.pipe) {
+                          @case ('currency') {
+                            {{ rowValue(row, header) | currency }}
+                          }
+                          @case ('uppercase') {
+                            {{ rowValue(row, header) | uppercase }}
+                          }
+                          @case ('lowercase') {
+                            {{ rowValue(row, header) | lowercase }}
+                          }
+                          @case ('date') {
+                            {{ (rowValue(row, header) | date:(header.dateFormat??defaultDateFormat))??'N/A'}}
+                          }
+                          @default {
+                            {{ (rowValue(row, header) ?? 'N/A') }}
+                          }
+                        }
+                      }
+                      @if (isString(header)) {
+                        @if (isISODateValue(getRowValue(row, header))) {
+                          {{ getRowValueAsDate(row, header) | date:defaultDateFormat }}
+                        } @else {
+                          {{ getRowValue(row, header) ?? 'N/A' }}
+                        }
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Botones de acción -->
+                <div class="mt-3 pt-3 border-top d-flex gap-2">
+                  <app-tabla-actions
+                    [row]="row"
+                    [rowButtons]="rowButtons"
+                    [rowEditar]="rowEditar"
+                    [rowEliminar]="rowEliminar"
+                    [eliminar]="eliminar"
+                    [restaurar]="restaurar"
+                    [useGenericDelete]="useGenericDelete"
+                    [idKey]="idKey"
+                    [rowEditarButton]="rowEditarButton"
+                    [rowEditarEliminadoButton]="rowEditarEliminadoButton"
+                    [rowEliminarButton]="rowEliminarButton"
+                    [rowRestaurarButton]="rowRestaurarButton"
+                    [rowButtonsStyle]="{ div: 'd-flex gap-1 flex-wrap' }"
+                    (rowEditarClick)="editEvent($event)"
+                    (rowEliminarClick)="genericDelete($event)"
+                    (rowButtonClickEvent)="onRowButtonClick($event.key, $event.row)">
+                  </app-tabla-actions>
+                </div>
+
+                <!-- Detalles expandibles -->
+                @if (isDetailed && detailedDefinition.length>0 && expandedIds[row.id]) {
+                  <div class="mt-3 pt-3 border-top">
+                    <div class="row g-2">
+                      @for (header of detailedDefinition; track header) {
+                        <div class="col-6">
+                          <small class="text-muted d-block">
+                            @if (isHeader(header)) {
+                              {{ header.header }}
+                            }
+                            @if (isString(header)) {
+                              {{ header.replaceAll('_',' ') | titlecase }}
+                            }
+                          </small>
+                          <div class="small">
+                            @if (isHeader(header)) {
+                              @switch (header.pipe) {
+                                @case ('currency') {
+                                  {{ rowValue(row,header) | currency }}
+                                }
+                                @case ('uppercase') {
+                                  {{ rowValue(row,header) | uppercase }}
+                                }
+                                @case ('lowercase') {
+                                  {{ rowValue(row,header) | lowercase }}
+                                }
+                                @case ('date') {
+                                  {{ rowValue(row,header) | date:(header.dateFormat??defaultDateFormat) }}
+                                }
+                                @default {
+                                  {{ rowValue(row,header) ?? 'N/A' }}
+                                }
+                              }
+                            }
+                            @if (isString(header)) {
+                              {{ getRowValue(row,header)??'N/A' }}
+                            }
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <!-- Click para expandir -->
+              @if (isDetailed && detailedDefinition.length>0) {
+                <div class="card-footer bg-light p-2 text-center">
+                  <button
+                    class="btn btn-sm btn-outline-secondary w-100"
+                    (click)="expand(row)"
+                  >
+                    <i class="bi {{ expandedIds[row.id] ? 'bi-chevron-up' : 'bi-chevron-down' }} me-1"></i>
+                    {{ expandedIds[row.id] ? 'Ver menos' : 'Ver más' }}
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Paginador para mobile -->
+      <div class="card shadow-sm mt-3">
+        <div class="card-body">
+          <app-paginador
+            [(data_paginador)]="paginador"
+            (actualizar_tablaChange)="getData()"
+            [total_pages]="total_pages"
+            [(per_page)]="paginador.per_page"
+            [sm]="true"
+            [total_items]="total_items">
+          </app-paginador>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+@if (dataSource.length===0) {
+  <app-tabla-empty-state
+    [message]="tableDefinition.emptyMsg"
+    [showAction]="agregar"
+    [actionText]="agregarButton.text || 'Agregar Nuevo'">
+  </app-tabla-empty-state>
+}

@@ -1,0 +1,46 @@
+@if (hasRowButtons()) {
+  <td [class]="rowButtonsStyle?.td ?? 'd-table-cell text-end'">
+    <div [class]="rowButtonsStyle?.div ?? 'hstack gap-1'">
+      @if (!isRowDeleted() && rowEditar) {
+        <app-button
+          [style]="rowEditarButton.style"
+          [text]="rowEditarButton.text"
+          [title]="rowEditarButton.title ?? 'Editar'"
+          (click)="onRowEdit()">
+        </app-button>
+      }
+      @if (isRowDeleted() && rowEditar) {
+        <app-button
+          [style]="rowEditarEliminadoButton.style"
+          [title]="rowEditarEliminadoButton.title ?? 'Ver'"
+          [text]="rowEditarEliminadoButton.text"
+          (click)="onRowEdit()">
+        </app-button>
+      }
+      @if (eliminar && rowEliminar && !isRowDeleted()) {
+        <app-button
+          [style]="rowEliminarButton.style"
+          [title]="rowEliminarButton.title ?? 'Eliminar'"
+          [text]="rowEliminarButton.text"
+          (click)="onRowDelete()">
+        </app-button>
+      }
+      @if (restaurar && rowEliminar && isRowDeleted()) {
+        <app-button
+          [style]="rowRestaurarButton.style"
+          [title]="rowRestaurarButton.title ?? 'Restaurar'"
+          [text]="rowRestaurarButton.text"
+          (click)="onRowDelete()">
+        </app-button>
+      }
+      @for (button of rowButtons; track button) {
+        <app-button
+          [style]="button.style"
+          [text]="button.text"
+          [title]="button.title"
+          (clickButtonEvent)="onRowButtonClick(button.key)"
+        />
+      }
+    </div>
+  </td>
+}

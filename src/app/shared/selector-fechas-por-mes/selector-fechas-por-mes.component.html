@@ -1,0 +1,16 @@
+<div class="container-fluid p-1">
+    <p class="mb-3 text-secondary">
+        <i class="bi bi-calendar2-month me-2"></i>Selecciona un mes
+    </p>
+
+    <div class="row justify-content-center">
+        @for (mes of mesesFiltrados; track $index) {
+        <div class="col-auto p-2">
+            <button class="btn" [class]="mesSeleccionado===mes.numero ? 'btn-secondary shadow' :'btn-light border'"
+                (click)="onMesSeleccionado(mes.numero)" (keyup.enter)="onMesSeleccionado(mes.numero)">
+                {{mes.nombre}}
+            </button>
+        </div>
+        }
+    </div>
+</div>

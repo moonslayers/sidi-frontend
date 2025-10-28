@@ -1,0 +1,47 @@
+<div [class]="inputGroup?'input-group':'col p-0'" (blur)="showOptions=false">
+  @if (label) {
+  <span [class]="style?.label??(inputGroup?'input-group-text':'fw-bold ps-1')" [class.text-s]="sm">
+    {{label}}@if (validator?.required) {
+    <span class="fw-bolder text-danger">*</span>
+    }
+  </span>
+  }
+  @if (!useAutocomplete) {
+  <select [class]="style?.input??'form-control form-select'" [class.form-select-sm]="sm" [(ngModel)]="value"
+    (ngModelChange)="valueChange.emit($event)" [required]="!!validator?.required"
+    [disabled]="validator?.disabled??false" #selectModel="ngModel"
+    [class.is-invalid]="selectModel.touched && selectModel.invalid">
+    <option [value]="undefined" selected disabled>Selecciona una opcion</option>
+    @for (option of options; track option) {
+    @if (isSelectItem(option)) {
+    <option [value]="option.value">{{option.label}}</option>
+    }
+    @if (isString(option)) {
+    <option>{{option}}</option>
+    }
+    }
+  </select>
+  }
+
+  @if (useAutocomplete) {
+  <input [class]="style?.input??'form-control'" [placeholder]="placeholder ?? label" [class.form-select-sm]="sm"
+    [(ngModel)]="value" (ngModelChange)="valueChange.emit($event)" [required]="!!validator?.required"
+    [disabled]="validator?.disabled??false" #selectModel="ngModel"
+    [class.is-invalid]="selectModel.touched && selectModel.invalid" (ngModelChange)="filterData()"
+    (click)="toggleOptions()" (focus)="filterData()">
+  <!-- Lista de sugerencias -->
+  @if (showOptions && filteredData.length > 0) {
+    <div class="list-group mt-1">
+      @for (item of filteredData; track item) {
+      <button type="button" class="list-group-item list-group-item-action" (click)="selectFilteredItem(item)" (keyup.enter)="selectFilteredItem(item)">
+        {{item}}
+      </button>
+      }
+    </div>
+  }
+  }
+
+  <div class="invalid-feedback">
+    {{errorFeedback}}
+  </div>
+</div>

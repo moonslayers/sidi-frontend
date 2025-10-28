@@ -1,0 +1,135 @@
+<div class="row">
+  @if (inputGroup) {
+    <div class="col-auto pe-0">
+      @if (label) {
+        <span [class]="style?.label??'input-group-text'" [class.text-s]="sm">
+          {{label}}@if (validator?.required) {
+          <span class="fw-bolder text-danger">*</span>
+        }
+      </span>
+    }
+  </div>
+}
+<div class="col text-start" [class.ps-0]="inputGroup">
+  @if (label && !inputGroup) {
+    <span [class]="style?.label??'fw-bold ps-1'" [class.text-s]="sm">
+      {{label}}
+      @if (validator?.required) {
+        <span class="fw-bolder text-danger">*</span>
+      }
+    </span>
+  }
+  <div class="input-container">
+    <input
+      [class]="style?.input??'form-control'"
+      [class.form-radius]="inputGroup"
+      [class.form-control-sm]="sm"
+      type="text"
+      [placeholder]="placeholder??label??''"
+      #noParte
+      (focus)="showAutoCompleteList()"
+      autocomplete="off"
+      [(ngModel)]="valueInput"
+      [class.is-invalid]="(inputModel.touched && inputModel.invalid)"
+      #inputModel="ngModel"
+      (ngModelChange)="valueInputChange.emit($event)"
+      [required]="!!validator?.required"
+      [disabled]="(validator?.disabled??false)||disabled"
+      (keyup.enter)="getDataSource()"
+      (input)="buscar()">
+    @if (!showAutoComplete) {
+      <div class="invalid-feedback">
+        {{'El campo '+label?.toLowerCase()+' es obligatorio'}}
+      </div>
+    }
+    @if (showAutoComplete && !validator?.disabled && simpleSelect) {
+      <select class="form-select position-absolute shadow-sm" multiple
+        [size]="autoCompleteSize" [class.form-select-sm]="sm"
+        [ngModel]="value" (ngModelChange)="value=$event[0]" (change)="onOptionSelected()">
+        @if (dataSource.length===0) {
+          <option disabled>No se encontraron registros.</option>
+        }
+        @for (data of dataSource; track data) {
+          <option class="hover-blue" [value]="getItemValue(data, keyList)">
+            {{getItemValue(data, keyList)}}
+            @if (showDetalle && hasProperty(data, keyDetalle??'nombre')) {
+              <span>
+                {{getItemValue(data, keyDetalle??'nombre')|uppercase}}
+              </span>
+            }
+            @if (keyListList && keyListList.length>0) {
+              <span>
+                {{keyListValue(data)}}
+              </span>
+            }
+            @if (function) {
+              <span>
+                {{function(data)}}
+              </span>
+            }
+            @if (keyListDetalle && keyListDetalle.length>0) {
+              (@for (detalle of keyListDetalle; track detalle) {
+              <span>
+                <b>{{detalle|titlecase}}:</b> {{getItemValue(data, detalle)}}
+              </span>
+              })
+            }
+          </option>
+        }
+        @if (nuevoRedirect) {
+          <option value="nuevo" class="fw-bold pointer text-primary">Crear nuevo registro</option>
+        }
+      </select>
+    }
+    @if (showAutoComplete && !validator?.disabled && expandedSelect) {
+      <div class="container form-select-floating position-absolute shadow-sm bg-white border rounded">
+        @if (dataSource.length===0) {
+          <div class="row">
+            <div class="col-12 disabled py-2" >
+              No se encontraron registros.
+            </div>
+          </div>
+        }
+        @for (i of listFromNumber(autoCompleteSize); track i) {
+          <div class="row">
+            @if (hasProperty(dataSource[i], keyList)) {
+              <div class="col-12 hover-blue border-bottom" tabindex="0" (click)="onOptionSelected(getItemValue(dataSource[i], keyList))" (keyup.enter)="onOptionSelected(getItemValue(dataSource[i], keyList))">
+                {{getItemValue(dataSource[i], keyList)}}
+                @if (showDetalle && hasProperty(dataSource[i], keyDetalle??'nombre')) {
+                  <span>
+                    {{getItemValue(dataSource[i], keyDetalle??'nombre')|uppercase}}
+                  </span>
+                }
+                @if (keyListList && keyListList.length>0) {
+                  <span>
+                    {{keyListValue(dataSource[i])}}
+                  </span>
+                }
+                @if (function) {
+                  <span>
+                    {{function(dataSource[i])}}
+                  </span>
+                }
+                @if (keyListDetalle && keyListDetalle.length>0) {
+                  (@for (detalle of keyListDetalle; track detalle) {
+                  <span>
+                    <b>{{detalle|titlecase}}:</b> {{getItemValue(dataSource[i], detalle)}}
+                  </span>
+                  })
+                }
+              </div>
+            }
+          </div>
+        }
+        @if (nuevoRedirect) {
+          <div class="row">
+            <div class="col-12 hover-blue border-bottom fw-bold pointer text-primary" tabindex="0" (click)="onOptionSelected('nuevo')" (keyup.enter)="onOptionSelected('nuevo')">
+              Crear nuevo registro
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+</div>

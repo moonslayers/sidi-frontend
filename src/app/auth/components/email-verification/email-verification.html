@@ -1,0 +1,135 @@
+<div class="container-fluid justify-content-center py-4">
+  <div class="d-flex align-items-center justify-content-center text-primary">
+    <i class="bi {{ statusIcon }} fs-1 me-3"></i>
+    <div>
+      <h3 class="card-title mb-1 fw-bold">{{ verificationTitle }}</h3>
+      <p class="card-text mb-0 opacity-75">Sistema de Verificación de Correo</p>
+    </div>
+  </div>
+  <!-- Loading State -->
+  @if (loading || verifying) {
+  <div class="text-center py-4">
+    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <h5 class="{{ statusClass }} fw-semibold">{{ verificationTitle }}</h5>
+    <p class="text-muted mb-0">{{ verificationDescription }}</p>
+  </div>
+  }
+
+  <!-- Success State -->
+  @else if (isVerificationSuccessful) {
+  <div class="text-center py-3">
+    <div class="mb-4">
+      <i class="bi bi-check-circle-fill text-success display-1"></i>
+    </div>
+    <h5 class="text-success fw-semibold mb-3">{{ verificationTitle }}</h5>
+    <p class="text-muted mb-4">{{ verificationDescription }}</p>
+
+    <!-- User Info -->
+    @if (userEmail) {
+    <div class="alert alert-success border-0 mb-4">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-person-circle fs-4 me-3"></i>
+        <div class="text-start">
+          <strong>{{ userDisplayName }}</strong><br>
+          <small class="text-muted">{{ userEmail }}</small>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Success Actions -->
+    <div class="d-grid gap-2 d-md-flex justify-content-center">
+      <button type="button" class="btn btn-primary btn-lg px-4" (click)="goToLogin()">
+        <i class="bi bi-box-arrow-in-right me-2"></i>
+        Ir al Inicio de Sesión
+      </button>
+    </div>
+
+    <p class="text-muted small mt-3 mb-0">
+      <i class="bi bi-clock me-1"></i>
+      Serás redirigido automáticamente...
+    </p>
+  </div>
+  }
+
+  <!-- Error State -->
+  @else if (hasVerificationErrors) {
+  <div class="text-center py-3">
+    <div class="mb-4">
+      <i class="bi bi-x-circle-fill text-danger display-1"></i>
+    </div>
+    <h5 class="text-danger fw-semibold mb-3">{{ verificationTitle }}</h5>
+    <p class="text-muted mb-4">{{ verificationDescription }}</p>
+
+    <!-- Error Details -->
+    @if (verificationErrors.length > 0) {
+    <div class="alert alert-danger border-0 mb-4 text-start">
+      <h6 class="alert-heading">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        Detalles del Error:
+      </h6>
+      @for (error of verificationErrors; track $index) {
+      <div class="small mb-1">
+        <i class="bi bi-dot me-1"></i>{{ error }}
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Error Actions -->
+    <div class="d-grid gap-2 d-md-flex justify-content-center">
+      <button type="button" class="btn btn-outline-primary" (click)="goToLogin()">
+        <i class="bi bi-box-arrow-in-right me-2"></i>
+        Iniciar Sesión
+      </button>
+      <button type="button" class="btn btn-outline-secondary" (click)="goToRegister()">
+        <i class="bi bi-person-plus me-2"></i>
+        Crear Cuenta
+      </button>
+    </div>
+
+    <div class="mt-4">
+      <small class="text-muted">
+        <i class="bi bi-info-circle me-1"></i>
+        Si el problema persiste, contacta al administrador del sistema.
+      </small>
+    </div>
+  </div>
+  }
+
+  <!-- Card Footer -->
+  <div class="container-fluid">
+    <div class="text-center py-3 border-0">
+      <small class="text-muted">
+        <i class="bi bi-shield-check me-1"></i>
+        Sistema Seguro de Verificación
+      </small>
+    </div>
+
+    <!-- Help Section -->
+    <div class="text-center mt-4">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <i class="bi bi-clock-history text-primary me-2"></i>
+            <small class="text-muted">Verificación rápida</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <i class="bi bi-shield-check text-success me-2"></i>
+            <small class="text-muted">Proceso seguro</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <i class="bi bi-headset text-info me-2"></i>
+            <small class="text-muted">Soporte técnico</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

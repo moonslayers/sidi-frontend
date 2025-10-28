@@ -1,0 +1,279 @@
+<div class="container-fluid p-3">
+  <div class="d-flex align-items-center justify-content-center">
+    <i class="bi bi-person-plus-fill me-2 fs-4"></i>
+    <h4 class="mb-0">Crear Cuenta</h4>
+  </div>
+  <p class="mb-0 mt-2 small opacity-75">Regístrate para acceder al sistema</p>
+
+
+  <!-- Alerta de éxito -->
+  @if (submitted) {
+  <div class="alert alert-success d-flex align-items-center" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    <div>
+      <strong>¡Cuenta creada con éxito!</strong><br>
+      <small class="text-muted">Por favor, verifica tu correo electrónico. Serás redirigido al inicio de sesión...</small>
+    </div>
+  </div>
+  }
+
+  <!-- Alerta de errores del backend -->
+  @if (registrationErrors && registrationErrors.length > 0) {
+  <div class="alert alert-danger" role="alert">
+    <div class="d-flex align-items-center mb-2">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      <strong>Error al registrar usuario</strong>
+    </div>
+    @for (error of registrationErrors; track $index) {
+      <div class="small mb-1">
+        <span class="fw-medium">{{ error.field }}:</span> {{ error.message }}
+      </div>
+    }
+  </div>
+  }
+
+  <!-- Formulario de registro -->
+  @if (!submitted) {
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <!-- Sección Información Personal -->
+    <div class="mb-4">
+      <h6 class="text-primary mb-3">
+        <i class="bi bi-person-badge me-2"></i>Información Personal
+      </h6>
+
+      <!-- Campo RFC -->
+      <div class="mb-3">
+        <label for="rfc" class="form-label fw-semibold">
+          RFC <span class="text-danger">*</span>
+        </label>
+        <div class="input-group has-validation">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-card-text text-primary"></i>
+          </span>
+          <input type="text" id="rfc" class="form-control text-uppercase" formControlName="rfc"
+            placeholder="Ej: ABCD123456XYZ" [ngClass]="{
+                             'is-invalid': f['rfc'].invalid && (f['rfc'].dirty || f['rfc'].touched),
+                             'is-valid': f['rfc'].valid && f['rfc'].touched
+                           }">
+        </div>
+
+        <!-- Mensajes de error para RFC -->
+        @if (f['rfc'].invalid && (f['rfc'].dirty || f['rfc'].touched)) {
+        <div class="invalid-feedback d-block mt-1">
+          @if (f['rfc'].errors?.['required']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El RFC es obligatorio.
+          </div>
+          }
+          @if (f['rfc'].errors?.['pattern']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El RFC debe tener un formato válido (12 caracteres para persona moral, 13 para persona física).
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Campo Nombre -->
+      <div class="mb-3">
+        <label for="name" class="form-label fw-semibold">
+          Nombre Completo <span class="text-danger">*</span>
+        </label>
+        <div class="input-group has-validation">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-person text-primary"></i>
+          </span>
+          <input type="text" id="name" class="form-control" formControlName="name" placeholder="Juan Pérez García"
+            [ngClass]="{
+                             'is-invalid': f['name'].invalid && (f['name'].dirty || f['name'].touched),
+                             'is-valid': f['name'].valid && f['name'].touched
+                           }">
+        </div>
+
+        <!-- Mensajes de error para Nombre -->
+        @if (f['name'].invalid && (f['name'].dirty || f['name'].touched)) {
+        <div class="invalid-feedback d-block mt-1">
+          @if (f['name'].errors?.['required']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El nombre es obligatorio.
+          </div>
+          }
+          @if (f['name'].errors?.['minlength']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El nombre debe tener al menos 3 caracteres.
+          </div>
+          }
+          @if (f['name'].errors?.['maxlength']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El nombre no puede exceder los 255 caracteres.
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Campo Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label fw-semibold">
+          Correo Electrónico <span class="text-danger">*</span>
+        </label>
+        <div class="input-group has-validation">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-envelope text-primary"></i>
+          </span>
+          <input type="email" id="email" class="form-control" formControlName="email" placeholder="correo@ejemplo.com"
+            [ngClass]="{
+                             'is-invalid': f['email'].invalid && (f['email'].dirty || f['email'].touched),
+                             'is-valid': f['email'].valid && f['email'].touched
+                           }">
+        </div>
+
+        <!-- Mensajes de error para Email -->
+        @if (f['email'].invalid && (f['email'].dirty || f['email'].touched)) {
+        <div class="invalid-feedback d-block mt-1">
+          @if (f['email'].errors?.['required']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El correo electrónico es obligatorio.
+          </div>
+          }
+          @if (f['email'].errors?.['email']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El formato del correo electrónico no es válido.
+          </div>
+          }
+          @if (f['email'].errors?.['maxlength']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            El correo no puede exceder los 255 caracteres.
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+
+
+    <!-- Sección Seguridad -->
+    <div class="mb-4">
+      <h6 class="text-primary mb-3">
+        <i class="bi bi-shield-lock me-2"></i>Seguridad
+      </h6>
+
+      <!-- Campo Contraseña -->
+      <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">
+          Contraseña <span class="text-danger">*</span>
+        </label>
+        <div class="input-group has-validation">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-lock text-primary"></i>
+          </span>
+          <input type="password" id="password" class="form-control" formControlName="password"
+            placeholder="Mínimo 8 caracteres" [ngClass]="{
+                             'is-invalid': f['password'].invalid && (f['password'].dirty || f['password'].touched),
+                             'is-valid': f['password'].valid && f['password'].touched
+                           }">
+          <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility('password')">
+            <i id="password-icon" class="bi bi-eye"></i>
+          </button>
+        </div>
+
+        <!-- Mensajes de error para Contraseña -->
+        @if (f['password'].invalid && (f['password'].dirty || f['password'].touched)) {
+        <div class="invalid-feedback d-block mt-1">
+          @if (f['password'].errors?.['required']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            La contraseña es obligatoria.
+          </div>
+          }
+          @if (f['password'].errors?.['minlength']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            La contraseña debe tener al menos 8 caracteres.
+          </div>
+          }
+        </div>
+        }
+
+        <small class="form-text text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          Mínimo 8 caracteres.
+        </small>
+      </div>
+
+      <!-- Campo Confirmar Contraseña -->
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label fw-semibold">
+          Confirmar Contraseña <span class="text-danger">*</span>
+        </label>
+        <div class="input-group has-validation">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-lock-fill text-primary"></i>
+          </span>
+          <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword"
+            placeholder="Repite tu contraseña" [ngClass]="{
+                             'is-invalid': f['confirmPassword'].invalid && (f['confirmPassword'].dirty || f['confirmPassword'].touched),
+                             'is-valid': f['confirmPassword'].valid && f['confirmPassword'].touched
+                           }">
+          <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility('confirmPassword')">
+            <i id="confirmPassword-icon" class="bi bi-eye"></i>
+          </button>
+        </div>
+
+        <!-- Mensajes de error para Confirmar Contraseña -->
+        @if (f['confirmPassword'].invalid && (f['confirmPassword'].dirty || f['confirmPassword'].touched)) {
+        <div class="invalid-feedback d-block mt-1">
+          @if (f['confirmPassword'].errors?.['required']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            Debes confirmar tu contraseña.
+          </div>
+          }
+          @if (f['confirmPassword'].errors?.['passwordMismatch']) {
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            Las contraseñas no coinciden.
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid || loading">
+        @if (loading) {
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Creando cuenta...
+        } @else {
+        <i class="bi bi-person-plus me-2"></i>
+        Crear Cuenta
+        }
+      </button>
+    </div>
+  </form>
+  }
+
+  <!-- Enlace a login -->
+  @if (!submitted) {
+  <div class="text-center mt-4 pt-3 border-top">
+    <p class="mb-2 text-muted">
+      ¿Ya tienes una cuenta?
+    </p>
+    <a routerLink="/login" class="btn btn-sm btn-outline-primary">
+      <i class="bi bi-box-arrow-in-right me-1"></i>
+      Iniciar Sesión
+    </a>
+  </div>
+  }
+</div>

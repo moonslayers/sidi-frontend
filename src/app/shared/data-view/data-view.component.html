@@ -1,0 +1,121 @@
+<div class="row justify-content-center" [class.sticky-lg-bottom]="sticky">
+    <div class="border rounded m-1 shadow bg-white hover-container" [class]="divClass"
+        [ngClass]="['border-'+bootstrapClass, 'text-'+bootstrapClass]">
+        <div class="row py-1 pointer" [ngClass]="['text-bg-'+bootstrapClass]" tabindex="0" (click)="clickExpand=!clickExpand" (keyup.enter)="clickExpand=!clickExpand">
+            <div class="col" [class.pointer]="useDialog" tabindex="0" (click)="openDialog()" (keyup.enter)="openDialog()">
+                <h4 class="fw-bold">{{title}}</h4>
+            </div>
+            <div class="col-auto" *ngIf="editarRoute">
+                <button class="btn btn-sm shadow" [ngClass]="'btn-'+bootstrapClass" [routerLink]="editarRoute">
+                    <i class="bi bi-pencil-fill"></i>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="!isArray(data); else table" class="container list px-3 py-0 click-no-expanded"
+        [class.click-no-expanded]="expanded"
+        [class.click-expanded]="clickExpand && expanded">
+            <ng-container *ngFor="let key of keys">
+                <div class="row px-3 py-0" *ngIf="!isIgnored(key)">
+                    <div class='col border-bottom p-1'>
+                        <b>{{key|titlecase}}</b>
+                    </div>
+                    <div class='col border-bottom p-1'>
+                        <span *ngIf="utils.isISODateString(getValueAsString(data, key));else default">
+                            {{getValueAsDate(data, key)|date:dateFormat}}
+                        </span>
+                        <ng-template #default>
+                            {{getValue(data, key)}}
+                        </ng-template>
+                    </div>
+                </div>
+            </ng-container>
+            <h4 class="fw-bold py-3" *ngIf="keys.length===0">No hay datos registrados.</h4>
+        </div>
+        <ng-template #table>
+            <div class="table-responsive list click-no-expanded" [class.click-expanded]="clickExpand">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <ng-container *ngFor="let key of keys">
+                                <th *ngIf="!isIgnored(key)" [ngClass]="'text-bg-'+bootstrapClass">
+                                    <b>{{key|titlecase}}</b>
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of dataArray">
+                            <ng-container *ngFor="let key of keys">
+                                <td *ngIf="!isIgnored(key)">
+                                    <span *ngIf="utils.isISODateString(getValueAsString(row, key));else default">
+                                        {{getValueAsDate(row, key)|date:dateFormat}}
+                                    </span>
+                                    <ng-template #default>
+                                        {{getValue(row, key)}}
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 class="fw-bold py-3" *ngIf="keys.length===0">No hay datos registrados.</h4>
+            </div>
+        </ng-template>
+    </div>
+</div>
+<app-formulario-flotante 
+size="large"
+[(show)]="showDialog" 
+[closeButton]="false" 
+[bgClass]="bootstrapClass">
+    <div class="container border rounded m-1 p-0 shadow bg-white"
+        [ngClass]="['border-'+bootstrapClass, 'text-'+bootstrapClass]">
+        <h4 class="fw-bold ps-3 py-2" [ngClass]="['text-bg-'+bootstrapClass]" *ngIf="title">{{title}}</h4>
+        <div class="container list px-3 py-0" *ngIf="!isArray(data)">
+            <ng-container *ngFor="let key of keys">
+                <div class="row px-3 py-0" *ngIf="!isIgnored(key)">
+                    <div class='col border-bottom p-1'>
+                        <b>{{key|titlecase}}</b>
+                    </div>
+                    <div class='col border-bottom p-1'>
+                        <span *ngIf="utils.isISODateString(getValueAsString(data, key));else default">
+                            {{getValueAsDate(data, key)|date:dateFormat}}
+                        </span>
+                        <ng-template #default>
+                            {{getValue(data, key)}}
+                        </ng-template>
+                    </div>
+                </div>
+            </ng-container>
+            <h4 class="fw-bold py-3" *ngIf="keys.length===0">No hay datos registrados.</h4>
+        </div>
+        <div *ngIf="isArray(data)" class="table-responsive list">
+            <table class="table table-sm table-borderless ">
+                <thead>
+                    <tr>
+                        <ng-container *ngFor="let key of keys">
+                            <th *ngIf="!isIgnored(key)" [ngClass]="'text-'+bootstrapClass">
+                                <b>{{key|titlecase}}</b>
+                            </th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of dataArray">
+                        <ng-container *ngFor="let key of keys">
+                            <td *ngIf="!isIgnored(key)" [ngClass]="'text-'+bootstrapClass">
+                                <span *ngIf="utils.isISODateString(getValueAsString(row, key));else default">
+                                    {{getValueAsDate(row, key)|date:dateFormat}}
+                                </span>
+                                <ng-template #default>
+                                    {{getValue(row, key)}}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 class="fw-bold py-3" *ngIf="keys.length===0">No hay datos registrados.</h4>
+        </div>
+    </div>
+</app-formulario-flotante>

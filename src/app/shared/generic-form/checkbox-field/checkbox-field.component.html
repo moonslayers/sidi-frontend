@@ -1,0 +1,16 @@
+
+<div [class]="style?.checkboxDiv??defaultClass">
+    <div class="form-check" [class.form-switch]="type==='switch'">
+        <input [class]="style?.input??'form-check-input bg-secondary'" name="flexCheck" role="switch" [id]="key"
+        [type]="type"
+        [disabled]="!!validator?.disabled"
+        (change)="onInputChange($event)"
+        [disabled]="validator?.disabled??false"
+        [checked]="asBoolean()"
+        [attr.aria-checked]="asBoolean()"
+        >
+        <label [class]="style?.label??'form-check-label'" [for]="key">
+          {{label}}
+        </label>
+    </div>
+</div>

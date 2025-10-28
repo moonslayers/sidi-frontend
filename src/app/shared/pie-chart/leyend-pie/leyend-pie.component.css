@@ -1,0 +1,12 @@
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/*Esto no funciona*/
+ul.charts-css.legend{
+  list-style: none;
+}

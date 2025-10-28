@@ -1,0 +1,37 @@
+.input-container{
+    width: 100%;
+    position:relative;
+    display: inline-block;
+}
+.form-select{
+    right:0;
+    z-index: 9;
+}
+.hover-blue:hover {
+    color: var(--primary); /* Cambia el color del texto al color primario */
+    background-color: var(--secondary); /* Cambia el fondo al color secundario */
+}
+
+.hover-primary:hover {
+    color: var(--light); /* Cambia el color del texto al color primario */
+    background-color: var(--primary); /* Cambia el fondo al color secundario */
+}
+
+.input-group-text{
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-radius{
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-left-width: 0;
+}
+
+.form-select-floating {
+    cursor: pointer;
+    right:0;
+    z-index: 9;
+    width: 100%;
+    height: auto;
+}

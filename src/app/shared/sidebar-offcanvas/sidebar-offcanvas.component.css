@@ -1,0 +1,71 @@
+.toggler {
+    position: absolute;
+    z-index: 5;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.offcanvas-size-xl {
+    --bs-offcanvas-width: min(95vw, 600px) !important;
+}
+
+.offcanvas-size-xxl {
+    --bs-offcanvas-width: min(95vw, 90vw) !important;
+}
+
+.offcanvas-size-md {
+    /* add Responsivenes to default offcanvas */
+    --bs-offcanvas-width: min(95vw, 400px) !important;
+}
+
+.offcanvas-size-sm {
+    --bs-offcanvas-width: min(95vw, 250px) !important;
+}
+
+.offcanvas-size-auto {
+    --bs-offcanvas-width: auto !important;
+}
+
+.bg {
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #dbdcdd 100%);
+}
+
+.image-container {
+    height: 8.0rem;
+    width: 100%;
+}
+
+.logout {
+    --animate-delay: 500ms;
+}
+
+.view-height {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.big-menu {
+    height: 100vh !important;
+    width: 4.5rem;
+    overflow-y: auto;
+    transition: width 0.3s ease-in;
+}
+
+.big-menu-expanded {
+    height: 100vh !important;
+    width: 13rem;
+    overflow-y: auto;
+    transition: width 0.3s ease-out;
+}
+
+.logo-icon {
+    width: 1.8rem;
+    transition: width 0.3s ease-out;
+}
+
+.logo-expanded {
+    width: 9.4rem;
+    transition: width 0.3s ease-out;
+}

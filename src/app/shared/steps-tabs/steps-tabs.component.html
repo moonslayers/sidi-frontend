@@ -1,0 +1,33 @@
+<div class="container-fluid mt-4 px-5 entry-animation">
+  <div class="row justify-content-between">
+    @for (tab of paginador; track tab; let i = $index) {
+      <div class="col col-auto text-center p-1">
+        <button class="btn scale-025 shadow-sm round-s" (click)="change_tab(i)"
+          [ngClass]="{'btn-primary':paginador[i].isSelected, 'border-primary':!paginador[i].isSelected, 'disabled':paginador[i].disabled,}">
+          {{i+1}}
+        </button>
+        <p class="d-none d-md-block" [class.disabled]="paginador[i].disabled">{{paginador[i].header}}</p>
+      </div>
+    }
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    @if (isunknownSelected()) {
+      <div class="col-12 card-box rounded shadow p-1 pb-3 mb-5 animate__animated animate__faster" [class.animate__slideInRight]="animation_in"
+        [class.animate__slideOutLeft]="animation_out">
+        @if (!paginador[actual_page].title) {
+          <p class="d-md-none h5 mb-3 text-center">{{paginador[actual_page].header}}</p>
+        }
+        @if (paginador[actual_page].title) {
+          <div class="col-12 mt-3 mb-1 text-center">
+            <p class="h5">{{paginador[actual_page].title}}</p>
+          </div>
+        }
+        <div class="container content position-relative">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    }
+  </div>
+</div>

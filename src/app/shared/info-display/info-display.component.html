@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <h4><b>{{title|titlecase}}</b></h4>
+  <div class="row justify-content-evenly mt-3">
+    @for (key of keys; track key) {
+      @if (dataType(getValue(data, key))!=='object') {
+        <div class="col-12 col-sm-5 col-lg-4">
+          <span class="fw-bold">{{key|titlecase}}:</span>
+          <p class="bg-white shadow-sm border rounded p-2">
+            @switch (dataType(getValue(data, key))) {
+              @case ('date') {
+                <span>
+                  {{getValueAsDate(data, key)|date:dateFormat}}
+                </span>
+              }
+              @case ('empty') {
+                <span>
+                  N/A
+                </span>
+              }
+              @default {
+                <span>
+                  {{getValue(data, key)}}
+                </span>
+              }
+            }
+          </p>
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.sticky-right{
+    position: sticky;
+    right: 0; 
+    background-color: transparent; /* Fondo transparente */
+}
+.no-expanded{
+    max-height: 40rem;
+    overflow-y: auto;
+}
+
+.expanded{
+    max-height: 80vh;
+    overflow-y: auto;
+}

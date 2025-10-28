@@ -1,0 +1,79 @@
+<div class="m-1" [class]="divClass">
+  <div class="row py-1">
+    <div class="col">
+      <h4 class="fw-bold">{{title|titlecase}}</h4>
+    </div>
+    @if (editarRoute) {
+      <div class="col-auto">
+        <button class="btn btn-sm shadow-sm" [disabled]="disabled" [ngClass]="'btn-'+bootstrapClass" [routerLink]="editarRoute">
+          <i class="bi bi-pencil-fill"></i>
+        </button>
+      </div>
+    }
+  </div>
+  <hr class="border my-1 mb-2" [ngClass]="'border-'+bootstrapClass">
+  @if (!isArray(data)) {
+    <div class="container-fluid p-2">
+      <div class="row">
+        @for (key of keys; track key; let i = $index) {
+          @if (!isIgnored(key)) {
+            <div [class]="((i+1)===keys.length)?'col-12 col-sm text-center border-bottom':'col-12 col-sm-6 col-md-4 col-xl-3 border-bottom'">
+              <div class="row justify-content-between">
+                <div class="col-12 pb-0 pt-2">
+                  <span class="fw-bold">{{key|titlecase}}:</span>
+                </div>
+                <div class="col-12 pt-0 pb-2 text-uppercase text-break align-self-center fw-bold">
+                  @if (key==='credito_id' && getValue(data, key)) {
+                    <a class="px-3" [routerLink]="'/main/creditos/validar/'+getValue(data, key)">{{getValue(data, key)}}</a>
+                    }@else {
+                    {{(data===undefined|| data===null)?this.emptyMsj:valueOf(getValue(data, key))}}
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+      @if (keys.length===0) {
+        <h4 class="fw-bold py-5">{{emptyMsj}}</h4>
+      }
+    </div>
+  } @else {
+    <div class="table-responsive list">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            @for (key of keys; track key) {
+              @if (!isIgnored(key)) {
+                <th>
+                  <b>{{key|titlecase}}</b>
+                </th>
+              }
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of data; track row) {
+            <tr>
+              @for (key of keys; track key) {
+                @if (!isIgnored(key)) {
+                  <td class="text-uppercase">
+                    {{(getValue(row, key)===undefined|| getValue(row, key)===null)?this.emptyMsj:valueOf(getValue(row, key))}}
+                  </td>
+                }
+              }
+              @if (urlKey) {
+                <td>
+                  <button class="btn btn-primary" [disabled]="!getValue(row, urlKey)" (click)="openUrlValue(row, urlKey)" (keyup.enter)="openUrlValue(row, urlKey)"><i class="bi bi-eye-fill"></i></button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+      @if (keys.length===0) {
+        <h4 class="fw-bold py-5">{{emptyMsj}}</h4>
+      }
+    </div>
+  }
+</div>

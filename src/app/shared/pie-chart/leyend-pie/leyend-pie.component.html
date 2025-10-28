@@ -1,0 +1,13 @@
+<ul class="charts-css legend">
+  @for (item of data; track item; let i = $index) {
+    <li>
+      <span
+        class="legend-color"
+      [ngStyle]="{
+        'background-color': item.color || '#ccc'
+      }"
+      ></span>
+      {{ item.label }}: ${{ item.value / 1000 }}K
+    </li>
+  }
+</ul>

@@ -1,0 +1,99 @@
+@if (show) {
+  <div class="offcanvas offcanvas-end show" tabindex="-1" style="visibility: visible;" (click)="onBackdropClick($event)" (keyup.enter)="onBackdropClick($event)">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">
+        <i class="bi bi-funnel me-2"></i>
+        Búsqueda Avanzada
+      </h5>
+      <button type="button" class="btn-close" aria-label="Cerrar" (click)="onClose()" (keyup.enter)="onClose()"></button>
+    </div>
+
+    <div class="offcanvas-body">
+      <div class="container-fluid p-0">
+        <!-- Filtros simples -->
+        @if (simpleFilteredSearch.length > 0) {
+          <div class="mb-4">
+            <h6 class="text-primary mb-3">
+              <i class="bi bi-funnel-fill me-1"></i>
+              Filtros Rápidos
+            </h6>
+            @for (filter of simpleFilteredSearch; track filter) {
+              <div class="mb-3">
+                <app-form-field [field]="filter" />
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Filtros avanzados -->
+        @if (advancedSearch.length > 0) {
+          <div class="mb-4">
+            <h6 class="text-primary mb-3">
+              <i class="bi bi-sliders me-1"></i>
+              Filtros Avanzados
+            </h6>
+            @for (filter of advancedSearch; track filter) {
+              <div class="mb-3">
+                <app-form-field [field]="filter" />
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Filtros de fecha -->
+        <div class="mb-4">
+          <h6 class="text-primary mb-3">
+            <i class="bi bi-calendar-range me-1"></i>
+            Rango de Fechas
+          </h6>
+
+          <div class="mb-3">
+            <label for="creado-antes-de" class="form-label fw-semibold">Creado Antes De:</label>
+            <input
+              id="creado-antes-de"
+              type="date"
+              class="form-control"
+              [(ngModel)]="creadoAntesDe.value"
+              placeholder="Seleccione una fecha"
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="creado-despues-de" class="form-label fw-semibold">Creado Después De:</label>
+            <input
+              id="creado-despues-de"
+              type="date"
+              class="form-control"
+              [(ngModel)]="creadoDespuesDe.value"
+              placeholder="Seleccione una fecha"
+            >
+          </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-grid gap-2 mt-4">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="onApplyFilters()"
+          >
+            <i class="bi bi-check-circle me-2"></i>
+            Aplicar Filtros
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="onClearFilters()"
+          >
+            <i class="bi bi-arrow-clockwise me-2"></i>
+            Limpiar Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backdrop -->
+  <div class="offcanvas-backdrop fade show" role="button" tabindex="0" (click)="onClose()" (keyup.enter)="onClose()" aria-label="Cerrar búsqueda avanzada"></div>
+}

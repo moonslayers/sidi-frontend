@@ -1,0 +1,41 @@
+<app-collapsable [title]="title">
+  @if (!this.isArray(data)) {
+    <table class="table table-sm">
+      <tbody>
+        @for (key of keys; track key) {
+          <tr>
+            <th class="table-secondary">{{key|titlecase}}</th>
+            <td class="text-uppercase">{{valueOf(getValue(data, key))}}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+  @if (this.isArray(data)) {
+    <div class="table-responsive">
+      <p class="p-5">
+        {{this.emptyMsj}}
+      </p>
+      @if (data.length>0) {
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              @for (key of keys; track key) {
+                <th>{{key|titlecase}}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of data; track row) {
+              <tr>
+                @for (key of keys; track key) {
+                  <td>{{valueOf(getValue(row, key))}}</td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  }
+</app-collapsable>

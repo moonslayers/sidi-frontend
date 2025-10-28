@@ -1,0 +1,21 @@
+/* Estilos para botones de acción de tabla */
+.hstack-gap-1 {
+  gap: 0.25rem;
+}
+
+.btn-group-actions .btn {
+  border-radius: 0.2rem;
+  transition: transform 0.15s ease-in-out;
+}
+
+.btn-group-actions .btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Responsive para botones en móviles */
+@media (max-width: 768px) {
+  .btn-group-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}

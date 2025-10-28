@@ -1,0 +1,33 @@
+<div class="input-container" style="position: relative; display: inline-block;">
+  @if (search) {
+    <div class="input-group scale-025">
+      <input class="form-control form-control-sm" type="text" [placeholder]="placeholder" #noParte (focus)="showAutoComplete=true"
+        autocomplete="off" [(ngModel)]="dato_input" (input)="buscar()" (keyup.enter)="search_button()">
+      <button class="btn btn-sm btn-outline-primary scale-025 ps-3 pe-3" (click)="search_button()">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  }
+  @if (!search) {
+    <input class="form-control shadow-sm scale-025" [class.form-control-sm]="sm" type="text" [placeholder]="placeholder" #noParte (focus)="showAutoComplete=true"
+      autocomplete="off" [(ngModel)]="dato_input" (ngModelChange)="dato_inputChange.emit($event)" (input)="buscar()">
+  }
+  @if (showAutoComplete && dataSource.length>0) {
+    <select class="form-select absolute" multiple [size]="autoCompleteSize"
+      [ngModel]="dato_input" (ngModelChange)="dato_input=$event[0]" (change)="actualizar_dato()">
+      @if (list_simple) {
+        @for (data of dataSource; track data) {
+          <option class="hover-blue" [value]="getItemValue(data, list_key)">{{getItemValue(data, list_key)}}
+          </option>
+        }
+      }
+      @if (list_detail) {
+        @for (data of dataSource; track data) {
+          <option class="hover-blue" [value]="getItemValue(data, list_key)">{{getItemValue(data, list_key)+'
+            ('+getItemValue(data, list_key_detail)+')'}}
+          </option>
+        }
+      }
+    </select>
+  }
+</div>

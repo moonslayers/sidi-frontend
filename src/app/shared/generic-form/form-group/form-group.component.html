@@ -1,0 +1,21 @@
+<div [class]="style?.div??'container-fluid px-2'">
+  <div class="row">
+    <div class="col align-self-center">
+      <span [class]="style?.title??defaultTitleClass">{{title}}</span>
+    </div>
+    @if (showAddButton) {
+      <div [class]="addButtonDiv">
+        <button [ngClass]="addButtonStyle" (click)="buttonEvent.emit()" (keyup.enter)="buttonEvent.emit()" [disabled]="addButtonDisabled">
+          @if (addButtonIcon) {
+            <i [ngClass]="addButtonIcon">{{addButtonText}}</i>
+          }
+          @if (!addButtonIcon) {
+            <span>{{addButtonText}}</span>
+          }
+        </button>
+      </div>
+    }
+  </div>
+  <hr [class]="style?.border??defaultBorderClass">
+  <ng-content></ng-content>
+</div>

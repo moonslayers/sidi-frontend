@@ -1,0 +1,23 @@
+<button
+  #button
+  [class]="style?.button??defaultButtonClass"
+  type="button"
+  [disabled]="disabled"
+  (click)="clickButtonEvent.emit()" (keyup.enter)="clickButtonEvent.emit()"
+  data-bs-toggle="popover"
+  data-bs-custom-class="custom-popover"
+  [attr.data-bs-content]="title"
+  [class.btn-sm]="sm"
+  data-bs-trigger="hover">
+  @if (style?.icon || defaultIconClass) {
+    <i [class]="style?.icon??defaultIconClass">
+      {{text}}
+    </i>
+  } @else {
+    @if (!style?.icon) {
+      <span>
+        {{text}}
+      </span>
+    }
+  }
+</button>

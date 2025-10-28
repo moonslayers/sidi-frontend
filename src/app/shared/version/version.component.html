@@ -1,0 +1,7 @@
+<div class="badge rounded-pill text-bg-secondary" [class.production]="isProduction" [class.development]="!isProduction">
+    <span class="version-icon">
+        <i class="bi" [class.bi-patch-check-fill]="isProduction" [class.bi-code-slash]="!isProduction"></i>
+    </span>
+    SIDI
+    <span class="version-text"> v{{ version }}</span>
+</div>

@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.bg-texture-1 {
+    background-image: url('../assets/texture1.png'); /* Ruta a tu imagen de textura */
+    background-repeat: repeat; /* Permite que la imagen se repita tanto horizontal como verticalmente */
+    background-size: auto; /* Usa el tamaño original de la imagen, lo que es ideal para texturas */
+    background-position: top left; /* Alinea la imagen en la esquina superior izquierda */
+}
+.bg-texture-2 {
+    background-image: url('../assets/texture2.png'); /* Ruta a tu imagen de textura */
+    background-repeat: repeat; /* Permite que la imagen se repita tanto horizontal como verticalmente */
+    background-size: auto; /* Usa el tamaño original de la imagen, lo que es ideal para texturas */
+    background-position: top left; /* Alinea la imagen en la esquina superior izquierda */
+}
+
+.bg-triangle-1 {
+    background-image: url('../assets/texture1.png'); /* Ruta a tu imagen de textura */
+    background-repeat: repeat; /* Permite que la imagen se repita en la zona visible */
+    background-size: auto; /* Mantiene el tamaño original de la imagen */
+    clip-path: polygon(0 0, 100% 0, 0 100%); /* Define la forma triangular */
+    width: 100%; /* Ancho del div */
+    height: 100%px; /* Altura del div */
+}
+
+.bg-triangle-2 {
+    background-image: url('../assets/texture2.png'); /* Ruta a tu imagen de textura */
+    background-repeat: repeat; /* Permite que la imagen se repita en la zona visible */
+    background-size: auto; /* Mantiene el tamaño original de la imagen */
+    clip-path: polygon(0 0, 100% 0, 0 100%); /* Define la forma triangular */
+    width: 100%; /* Ancho del div */
+    height: 100%; /* Altura del div */
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.scale-00675:hover {
+    transform: scale(1.00675);
+    transition: transform 0.5s ease;
+}
+
+.scale-0125:hover {
+    transform: scale(1.0125);
+    transition: transform 0.5s ease;
+}
+
+.scale-025:hover {
+    transform: scale(1.025);
+    transition: transform 0.5s ease;
+}
+
+.scale-05:hover {
+    transform: scale(1.05);
+    transition: transform 0.5s ease;
+}
+
+.vh-100{
+    height: 100vh;
+    width: 100wv;
+}
+
+.text-s {
+    font-size: small;
+}

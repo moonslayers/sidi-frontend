@@ -1,0 +1,28 @@
+@if (show) {
+  <div #container class='col vw-100 vh-100 top-left-front blur-s p-4 ps-2 overflow-scroll main-back'
+    [ngClass]="{ 'fade-out': !showClass, 'fade-in': showClass }">
+    @if (!closeButton) {
+      <button
+        class="btn-close position-fixed top-0 end-0 m-3"
+        [ngClass]="'btn-'+bgClass"
+        (click)="cerrarDesdeBoton()" (keyup.enter)="cerrarDesdeBoton()"
+        >
+      </button>
+    }
+    <div class='row justify-content-center m-0 mt-1 p-0'>
+      <div #div class='rounded p-0 m-0 round-m shadow' [class]="get_sizing()" [ngClass]="'bg-'+bgClass">
+        <div class='row justify-content-center p-0 m-0'>
+          @if (closeButton) {
+            <div class='col-lg-12 text-end m-0 p-2'>
+              <button class='btn btn-sm btn-danger round-xl shadow pt-0 pb-0 text-bold ps-3 pe-3 scale-05'
+                (click)="cerrarDesdeBoton()" (keyup.enter)="cerrarDesdeBoton()"><i class="bi bi-x-octagon-fill"></i>
+              </button>
+            </div>
+          }
+          <ng-content>
+          </ng-content>
+        </div>
+      </div>
+    </div>
+  </div>
+}

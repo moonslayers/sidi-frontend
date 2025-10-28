@@ -1,0 +1,11 @@
+<div class="table-responsive py-3 px-2">
+    <h5><b><ng-content select="[title]"></ng-content></b></h5>
+    <table class="table border">
+        <thead>
+            <ng-content select="[header]"></ng-content>
+        </thead>
+        <tbody>
+            <ng-content select="[body]"></ng-content>
+        </tbody>
+    </table>
+</div>

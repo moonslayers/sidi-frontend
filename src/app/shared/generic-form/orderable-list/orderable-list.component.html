@@ -1,0 +1,36 @@
+<app-form-group [style]="groupStyle" [title]="title">
+  <div class="container px-2">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        @for (row of list; track row; let i = $index) {
+          <ul class="list-group">
+            <li class="list-group-item py-0 my-1" aria-current="true">
+              <div class="row justify-content-center">
+                <div class="col-auto align-self-center p-1">
+                  <span [class]="row.style?.label">
+                    {{row.label??((i+1)+' °')}}
+                  </span>
+                </div>
+                <div class="col align-self-center p-1">
+                  <span [class]="row.style?.text">
+                    {{row.text}}
+                  </span>
+                </div>
+                <div class="col-auto align-self-center p-1">
+                  <div class="hstack gap-1">
+                    <button class="btn btn-sm btn-success scale-05" (click)="moveUp(row)" (keyup.enter)="moveUp(row)" aria-label="Mover hacia arriba">
+                      <i class="bi bi-chevron-compact-up"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger scale-05" (click)="moveDown(row)" (keyup.enter)="moveDown(row)" aria-label="Mover hacia abajo">
+                      <i class="bi bi-chevron-compact-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+</app-form-group>

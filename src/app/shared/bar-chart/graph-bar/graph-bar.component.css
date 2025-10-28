@@ -1,0 +1,35 @@
+.bar-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  width: 100px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.label-placeholder {
+  width: 20px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.bar-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.bar {
+  height: 20px;
+  border-radius: 0.25rem;
+  transition: width 0.3s ease;
+}
+
+.value {
+  margin-left: 0.5rem;
+  font-weight: bold;
+  color: #333;
+}

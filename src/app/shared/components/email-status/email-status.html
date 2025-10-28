@@ -1,0 +1,135 @@
+<div class="email-status-container">
+  <!-- Compact Mode -->
+  @if (compact()) {
+    <div class="d-flex align-items-center">
+      <!-- Status Badge -->
+      <span class="badge {{ statusBadgeClass }} me-2">
+        <i class="bi {{ statusIcon }} me-1"></i>
+        {{ statusText }}
+      </span>
+
+      <!-- Resend Button (Compact) -->
+      @if (shouldShowResendButton) {
+        <button type="button"
+                class="btn btn-sm btn-outline-primary"
+                (click)="resendVerification()"
+                [disabled]="resendLoading()">
+          @if (resendLoading()) {
+            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            Enviando...
+          } @else {
+            <i class="bi bi-envelope me-1"></i>
+            Reenviar
+          }
+        </button>
+      }
+
+      <!-- Error (Compact) -->
+      @if (hasError) {
+        <small class="text-danger ms-2" title="{{ errorMessage }}">
+          <i class="bi bi-exclamation-triangle"></i>
+        </small>
+      }
+    </div>
+  }
+
+  <!-- Full Mode -->
+  @else {
+    <div class="card border">
+      <div class="card-body p-3">
+        <!-- Header -->
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <div class="d-flex align-items-center">
+            <i class="bi {{ statusIcon }} {{ statusBadgeClass.replace('bg-', 'text-') }} me-2"></i>
+            <h6 class="mb-0 fw-semibold">Estado de Verificación</h6>
+          </div>
+
+          <!-- Last Checked -->
+          @if (lastChecked()) {
+            <small class="text-muted">
+              <i class="bi bi-clock me-1"></i>
+              {{ lastCheckedFormatted }}
+            </small>
+          }
+        </div>
+
+        <!-- Status Information -->
+        <div class="mb-3">
+          <p class="mb-1">{{ statusDescription }}</p>
+          <div class="d-flex align-items-center">
+            <span class="badge {{ statusBadgeClass }} me-2">
+              {{ statusText }}
+            </span>
+            <small class="text-muted">{{ email() }}</small>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        @if (hasError) {
+          <div class="alert alert-danger alert-sm py-2 mb-3">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <small>{{ errorMessage }}</small>
+          </div>
+        }
+
+        <!-- Resend Success Message -->
+        @if (resendSuccess()) {
+          <div class="alert alert-success alert-sm py-2 mb-3">
+            <i class="bi bi-check-circle me-1"></i>
+            <small>Correo de verificación reenviado exitosamente</small>
+          </div>
+        }
+
+        <!-- Resend Error Message -->
+        @if (resendError()) {
+          <div class="alert alert-warning alert-sm py-2 mb-3">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <small>{{ resendError() }}</small>
+          </div>
+        }
+
+        <!-- Actions -->
+        <div class="d-flex align-items-center justify-content-between">
+          <!-- Refresh Button -->
+          <button type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="checkEmailStatus()"
+                  [disabled]="loading()">
+            @if (loading()) {
+              <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              Verificando...
+            } @else {
+              <i class="bi bi-arrow-clockwise me-1"></i>
+              Actualizar
+            }
+          </button>
+
+          <!-- Resend Button -->
+          @if (shouldShowResendButton) {
+            <button type="button"
+                    class="btn btn-sm btn-primary"
+                    (click)="resendVerification()"
+                    [disabled]="resendLoading()">
+              @if (resendLoading()) {
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                Enviando...
+              } @else {
+                <i class="bi bi-envelope me-1"></i>
+                Reenviar Verificación
+              }
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Loading Overlay -->
+@if (loading()) {
+  <div class="loading-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+}

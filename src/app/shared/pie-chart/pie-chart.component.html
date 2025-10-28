@@ -1,0 +1,8 @@
+<div class="pie-chart-container" [ngClass]="'legend-' + chartPosition">
+  <app-title-pie [title]="title"></app-title-pie>
+
+  <div class="pie-body">
+    <app-leyend-pie [data]="data"></app-leyend-pie>
+    <app-graph-pie [data]="processedData"></app-graph-pie>
+  </div>
+</div>

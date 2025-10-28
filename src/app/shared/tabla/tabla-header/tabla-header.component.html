@@ -1,0 +1,9 @@
+<span class="pointer user-select-none" tabindex="0" (click)="updateSorting()" (keyup.enter)="updateSorting()">
+  {{(isHeader(header)? header.header: header) |titlecase}}
+  @if (isSorted && !desc) {
+    <i class="bi bi-arrow-down-short text-primary"></i>
+  }
+  @if (isSorted && desc) {
+    <i class="bi bi-arrow-up-short text-primary"></i>
+  }
+</span>

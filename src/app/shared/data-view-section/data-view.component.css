@@ -1,0 +1,34 @@
+.list{
+    max-height: 30rem;
+    overflow-y: auto;
+}
+.hover-container{
+    position: relative;
+    transition: all 0.3s ease-in-out; /* Suavidad al pasar hover */
+}
+
+/* Contenido interno */
+.hover-content {
+    width: 100%; /* Comienza colapsado */
+    height: 0; /* Ocupa toda la altura del contenedor */
+    overflow-y: auto;
+    transition: all 0.3s ease-in-out; /* Animación suave */
+  }
+  
+  /* Cuando el contenedor es hover */
+  .hover-container:hover .hover-content {
+    height: 15rem; /* Se expande hasta 20rem */
+    max-height: 80%; /* O hasta el 100% del ancho del contenedor padre */
+  }
+.click-no-expanded{
+  width: 100%; /* Comienza colapsado */
+  height: 0; /* Ocupa toda la altura del contenedor */
+  overflow-y: auto;
+  transition: all 0.3s ease-in-out; /* Animación suave */
+}
+
+.click-expanded{
+  height: 15rem;
+  max-height: 80%;
+  transition: all 0.3s ease-in-out; /* Animación suave */
+}

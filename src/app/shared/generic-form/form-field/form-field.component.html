@@ -1,0 +1,66 @@
+@if (fieldTypes.isSimpleField(field)) {
+  <app-simple-field
+    [type]="field.type"
+    [label]="field.label"
+    [(value)]="field.value"
+    (unknownChange)="fieldChange.emit(field)"
+    [placeholder]="field.placeholder"
+    [validator]="field.validator"
+    [(valid)]="field.valid"
+    (validChange)="cdr.detectChanges()"
+    [defaultValue]="field.defaultValue"
+    [sm]="sm"
+    [inputGroup]="field.inputGroup"
+    />
+}
+@if (fieldTypes.isSelectField(field)) {
+  <app-select-field
+    [label]="field.label"
+    [(value)]="field.value"
+    [useAutocomplete]="field.useAutoComplete"
+    [sm]="sm"
+    [(valid)]="field.valid"
+    [style]="field.style"
+    (validChange)="cdr.detectChanges()"
+    (unknownChange)="fieldChange.emit(field)"
+    [options]="field.options"
+    [validator]="field.validator"
+    [defaultOption]="field.defaultOption"
+    [inputGroup]="field.inputGroup"
+    />
+}
+@if (fieldTypes.isCheckboxField(field)) {
+  <app-checkbox-field
+    [label]="field.label"
+    [key]="field.key"
+    [type]="field.checkBoxType"
+    [style]="field.style"
+    [(value)]="field.value"
+    [defaultValue]="field.defaultValue"
+    [(valid)]="field.valid"
+    (validChange)="cdr.detectChanges()"
+    (unknownChange)="fieldChange.emit(field)"
+    [asYesOrNo]="field.asYesOrNo"
+    />
+}
+@if (fieldTypes.isAutoCompleteField(field)) {
+  <app-autocomplete-field
+    [(valid)]="field.valid"
+    (validChange)="fieldChange.emit(field)"
+    (validChange)="cdr.detectChanges()"
+    [(value)]="field.value"
+    [sm]="sm"
+    [placeholder]="field.placeholder"
+    [label]="field.label"
+    [nuevoRedirect]="field.nuevoRedirect"
+    [apiUrl]="field.apiUrl"
+    [keyList]="field.keyList"
+    [keyDetalle]="field.keyDetalle"
+    [keyListDetalle]="field.keyListDetalle"
+    [validator]="field.validator"
+    (unknownChange)="fieldChange.emit(field)"
+    [inputGroup]="field.inputGroup"
+    [function]="field.function"
+    [extraData]="getExtraData()"
+    />
+}

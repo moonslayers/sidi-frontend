@@ -1,0 +1,14 @@
+@if (fieldTypes.isFormGroup(formGroup)) {
+  <app-form-group [style]="formGroup.style" [title]="formGroup.title"
+    [defaultBorderClass]="defaultBorderClass" [defaultTitleClass]="defaultTitleClass">
+    <div class="row justify-content-evenly px-4">
+      @for (groupField of formGroup.fields; track groupField) {
+        <div [class]="groupField.style?.div??defaultInputDivClass">
+          @if (!groupField.hidden) {
+            <app-form-field [field]="groupField" (fieldChange)="onFieldChange($event, groupField)" />
+          }
+        </div>
+      }
+    </div>
+  </app-form-group>
+}

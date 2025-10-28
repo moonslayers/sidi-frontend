@@ -1,0 +1,36 @@
+.loader-div {
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(8px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.loader {
+    display: inliine;
+    border: 10px solid #8f808000;
+    /* Light grey */
+    border-top: 10px solid #07262f;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: calc(50% - 60px);
+    left: calc(50% - 60px);
+    background-color: rgba(255, 255, 255, 0.164);
+    z-index: 999;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

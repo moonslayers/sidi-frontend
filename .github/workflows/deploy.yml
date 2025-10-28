@@ -1,0 +1,65 @@
+name: Deploy Angular Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'angular.json'
+      - 'tsconfig.json'
+      - '.github/workflows/deploy.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⬇️ Setup Node.js with Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json  # Asegúrate de que existe
+
+      - name: 📦 Install dependencies
+        run: npm install --prefer-offline
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: 🏗️ Build for Production
+        run: npm run build -- --configuration=production
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: 📤 Copy build to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          source: "dist/sidi-frontend/browser/*"
+          target: "/home/ubuntu/build"
+
+      - name: 🧩 Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          script: |
+            # Copiar
+            cp -r ./build/dist/sidi-frontend/browser/* /var/www/html/sidi/
+
+            rm -r build
+            
+            echo "✅ Frontend pegado en $TARGET_DIR y carpeta build eliminada"
+
+      - name: ✅ Success
+        run: echo "🎉 Frontend desplegado con éxito"

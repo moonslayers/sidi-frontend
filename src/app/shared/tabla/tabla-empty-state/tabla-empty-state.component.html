@@ -1,0 +1,19 @@
+<div class="d-flex flex-column align-items-center justify-content-center py-5">
+  <div class="text-center mb-4">
+    <i class="bi {{ iconClass }} display-1 text-muted"></i>
+  </div>
+
+  <div class="text-center">
+    <h4 class="text-muted mb-3">{{ defaultMessage }}</h4>
+
+    @if (showAction) {
+      <p class="text-muted mb-4">
+        ¿Deseas agregar un nuevo registro?
+      </p>
+      <button class="btn btn-primary">
+        <i class="bi bi-plus-circle me-2"></i>
+        {{ actionText }}
+      </button>
+    }
+  </div>
+</div>

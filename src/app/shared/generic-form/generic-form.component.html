@@ -1,0 +1,113 @@
+<h3>{{title}}</h3>
+<div [class]="rowClass??'row justify-content-evenly mt-2'">
+  @for (field of form; track field) {        
+    @if (fieldTypes.isFormGroup(field) && !field.hidden) {      
+      <app-form-field-group
+        [formGroup]="field"
+        [defaultBorderClass]="defaultBorderClass"
+        [defaultTitleClass]="defaultTitleClass"
+        [defaultInputDivClass]="defaultInputDivClass"
+        [(valid)]="field.valid"
+        (validChange)="setIsValid()"
+        />
+    }
+    @if (fieldTypes.isFileInput(field)) {
+      <div
+        [class]="field.style?.div??'col-12 p-3 px-5 align-self-end'">        
+        <app-file-input
+          [accept]="field.accept"
+          [label]="field.label"
+          [multiple]="field.multiple"
+          [key]="field.fileKey"
+          [id]="getIdForFileInput()"
+          [foreign_key]="field.foreign_key"
+          [divClass]="field.style?.divInput"
+          [inputClass]="field.style?.input"
+          [labelClass]="field.style?.label"
+          [apiUrl]="field.apiUrl"
+          [formExtra]="field.formExtra"
+          [(url)]="field.value"
+          [(valid)]="field.valid"
+          [showDownload]="field.showDownload"
+          [sm]="sm"
+          />
+      </div>
+    }
+    @if (fieldTypes.isDinamicGroupField(field) && !field.hidden) {                       
+      <app-dinamic-group-field
+        #dinamycForm
+        [title]="field.title"
+        [style]="field.style"
+        [relationKey]="field.relationKey"
+        [dataSource]="getRelationData(field)"
+        [disabled]="validator?.disabled"
+        [baseFields]="field.baseFields"
+        [id]="getIdForDinamicGroup()"
+        [apiUrl]="field.apiUrl"
+        [foreign_key]="field.foreign_key"
+        [deleteButton]="field.deleteButton"
+        [addButton]="field.addButton"
+        [(valid)]="field.valid"
+        (validChange)="setIsValid()"        
+        />
+    }
+    @if (fieldTypes.isOrderableList(field) && !field.hidden) {      
+      <app-orderable-list
+        [title]="field.title"
+        [value]="getOrderableListValue(field)"
+      (valueChange)="setOrderableListValue(field, $event)"
+        [groupStyle]="field.style"
+        [list]="field.orderableList"
+        [upButton]="field.upButton"
+        [downButton]="field.downButton"
+        [(valid)]="field.valid"
+        (validChange)="setIsValid()"
+        />
+    }
+    @if (fieldTypes.isMapField(field)) {      
+      <app-map-field
+        [hidden]="field.hidden"
+        [title]="field.title"
+        [(latitud)]="field.latitud.value"
+        [(longitud)]="field.longitud.value"
+        [(valid)]="field.valid"
+        />
+    }
+    @if (fieldTypes.isFormField(field) && !field.hidden) {
+      <div
+        [class]="field.style?.div??defaultInputDivClass"
+        >        
+        <app-form-field
+          [field]="field"
+          [sm]="sm"
+          (fieldChange)="onFieldChange($event,this.form, field)"
+          />
+      </div>
+    }
+  }
+  @if (rowSubmit && isBotonGuardarEnabled) {    
+    <div [class]="rowSubmitButton?.style?.div??'col-auto p-3 align-self-end'">
+      <app-button [style]="rowSubmitButton?.style" [sm]="sm" [text]="rowSubmitButton?.text" (clickButtonEvent)="submitData()" [disabled]="!valid" />
+    </div>
+  }
+  @if (rowDelete && edit) {    
+    <div [class]="rowDeleteButton?.style?.div??'col-auto p-3 align-self-end'">
+      <app-button [style]="rowDeleteButton?.style" [text]="rowDeleteButton?.text" (clickButtonEvent)="deleteData()" [disabled]="!valid" />
+    </div>
+  }
+  @if (rowExtra && edit) {    
+    <div [class]="rowExtraButton?.style?.div??'col-auto p-3 align-self-end'">
+      <app-button [style]="rowExtraButton?.style" [text]="rowExtraButton?.text" (clickButtonEvent)="rowExtraEvent.emit()" [disabled]="!valid" />
+    </div>
+  }
+</div>
+@if (form.length>0 && !rowSubmit) {  
+  <div [class]="rowButtonClass">
+    <div class="col text-center">
+      <app-button [style]="{button:buttonClass}" [sm]="sm" [text]="submitText" (clickButtonEvent)="submitData()" [disabled]="!valid || disabled" />
+      <p class="text-end">
+        <small>Los campos con <span class="text-danger fw-bold">*</span> son obligatorios</small>
+      </p>
+    </div>
+  </div>
+}
