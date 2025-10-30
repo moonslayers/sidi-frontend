@@ -289,8 +289,8 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
             validator: { required: false } },
           { 
             key: 'relacionado_leyes', 
-            label: '14. La limitante, ¿Tiene que ver con leyes o regulaciones?', 
-            options: ['si', 'no'], 
+            label: '14. La limitante, ¿Tiene que ver con leyes o regulaciones?',             
+            options: ['si', 'no'],
             validator: { required: true } },
           {
             key: 'leyes_regulaciones',
@@ -300,8 +300,8 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
           },
           { 
             key: 'relacionado_tramites', 
-            label: '15. La limitante a la que te enfrentas, ¿Se debe a cómo se realizan los trámites?', 
-            options: ['si', 'no'], 
+            label: '15. La limitante a la que te enfrentas, ¿Se debe a cómo se realizan los trámites?',             
+            options: ['si', 'no'],
             validator: { required: true } },
           {
             key: 'tramites',
@@ -312,7 +312,7 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
           { 
             key: 'relacionado_mercado', 
             label: '16. Lo que te impide crecer, ¿Está relacionado con el mercado en el que opera tu empresa?', 
-            options: ['si', 'no'], 
+            options: ['si', 'no'],
             validator: { required: true } },
           {
             key: 'limitantes_mercado',
@@ -328,10 +328,10 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
             ],
             validator: { required: true }
           },
-          { key: 
-            'otra_limitante_mercado', 
-            label: 'En caso de escoger “otro” se abre un campo en blanco que especifique lo correspondiente', 
-            placeholder: 'EN ',
+          { 
+            key: 'otra_limitante_mercado', 
+            label: '16.1.1. ¿A qué otra limitante te estás enfrentando?',
+            placeholder: 'Ingresa otra limitante',
             type: 'text', 
             validator: { required: false } }
         ]
@@ -343,22 +343,22 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
         fields: [
           { 
             key: 'descripcion_limitante', 
-            label: 'Explica con claridad las situaciones que constantemente han limitado el crecimiento de tu empresa.', 
+            label: '17. Explica con claridad las situaciones que constantemente han limitado el crecimiento de tu empresa.', 
             type: 'text', 
             validator: { required: true } },
           { 
             key: 'archivo_limitante', 
-            label: '¿Deseas agregar algún archivo sobre lo que escribiste? (PDF)', 
+            label: '17.1 ¿Deseas agregar algún archivo sobre lo que escribiste? (PDF)', 
             type: 'text', 
             validator: { required: false } },
           { 
             key: 'propuesta_solucion', 
-            label: 'Qué propones para solucionar esas limitantes?', 
+            label: '18. Qué propones para solucionar esas limitantes?', 
             type: 'text', 
             validator: { required: false } },
           { 
             key: 'archivo_propuesta', 
-            label: '¿Deseas agregar algún archivo de tu propuesta? (PDF)', 
+            label: '18.1 ¿Deseas agregar algún archivo de tu propuesta? (PDF)', 
             type: 'text', 
             validator: { required: false } }
         ]
