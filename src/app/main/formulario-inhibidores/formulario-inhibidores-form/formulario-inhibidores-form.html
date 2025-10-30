@@ -1,10 +1,15 @@
-<div class="container-fluid">    
-    <div>
-        {{form.title}}
-    </div>
-    @if(form.forms){
-        @for (form of form.forms; track $index) {
-            <app-generic-form [form]="form"></app-generic-form>
+<div class="container-fluid m-2">    
+    <div class="bg-white rounded p-4 ">
+        <div class="text-center">
+            <h2>{{form.title}}</h2>
+        </div>
+        @if(form.forms){
+            @for (form of form.forms; track $index) {
+                <app-generic-form [form]="form"
+                    [conditionals]="conditionals"
+                    [defaultInputDivClass]="'col-12 col-md-6 p-3'">
+                </app-generic-form>
+            }
         }
-    }
+    <div>
 </div>
