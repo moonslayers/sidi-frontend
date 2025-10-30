@@ -365,6 +365,10 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
     if (changes['validator'] || changes['form'] || changes['disabled']) {
       this.setGlobalValidator();
     }
+
+    if (changes['form']) {
+        this.setIsValid();
+    }
   }
 
   private fillEdit() {

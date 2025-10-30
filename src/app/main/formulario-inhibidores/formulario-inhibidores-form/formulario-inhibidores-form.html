@@ -4,12 +4,26 @@
             <h2>{{form.title}}</h2>
         </div>
         @if(form.forms){
-            @for (form of form.forms; track $index) {
-                <app-generic-form [form]="form"
-                    [conditionals]="conditionals"
-                    [defaultInputDivClass]="'col-12 col-md-6 p-3'">
-                </app-generic-form>
-            }
+            <app-generic-form 
+                [form]="form.forms[currentSection]" 
+                [conditionals]="conditionals" 
+                (validChange)="isSectionValid = $event"
+                (formChange)="form.forms[currentSection] = $event"
+                [defaultInputDivClass]="'col-12 col-md-6 p-3'"
+                [rowSubmit]="true"
+                [isBotonGuardarEnabled]="false"
+                [isolatedForm]="false">
+            </app-generic-form>
+            <div class="d-flex justify-content-end mt-3">
+                @if(currentSection > 0) {
+                    <button class="btn btn-secondary me-2" (click)="previousSection()">
+                        Previo
+                    </button>
+                }
+                <button class="btn btn-primary" (click)="nextSection()" [disabled]="!isSectionValid">
+                    {{ currentSection < form.forms.length - 1 ? 'Next' : 'Guardar' }}
+                </button>
+            </div>
         }
     <div>
 </div>

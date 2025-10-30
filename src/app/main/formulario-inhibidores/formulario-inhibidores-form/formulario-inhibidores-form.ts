@@ -10,6 +10,8 @@ interface FormularioInhibidoresFormDefinition {
 //Probar sección A
 //Terminar sección B
 //Terminar sección C
+//Crear componentes de inputs nuevos:
+// - Selector multiple, poder seleccionar varias opciones de un selector
 
 const FORM_DEFINITION: FormularioInhibidoresFormDefinition = 
 {
@@ -249,17 +251,24 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
       {
         title: "Sección B: Cuéntanos qué limita el crecimiento de tu empresa",
         fields: [
-          { key: 'relacionado_gobierno', label: 'Lo que limita el crecimiento de tu empresa ¿está relacionado con el gobierno?', options: ['si', 'no'], validator: { required: true } },
+          { key: 
+            'relacionado_gobierno', 
+            label: '11. Lo que limita el crecimiento de tu empresa ¿está relacionado con el gobierno?', 
+            options: ['si', 'no'], 
+            validator: { required: true } },
           { 
             key: 'nivel_gobierno', 
-            label: '¿Sabes con cuál nivel de gobierno está relacionada tu limitante?',             
+            label: '12. ¿Sabes con cuál nivel de gobierno está relacionada tu limitante?',             
             options: ['Federal', 'Estatal', 'Municipal', 'No sé'],
             validator: { required: true } 
           },
-          { key: 'relacionado_sitio_web', label: 'La limitante, ¿Tiene que ver con el sitio web o aplicación del gobierno?', options: ['si', 'no'], validator: { required: true } },
+          { 
+            key: 'relacionado_sitio_web', 
+            label: '13. La limitante, ¿Tiene que ver con el sitio web o aplicación del gobierno?', 
+            options: ['si', 'no'], validator: { required: true } },
           {
             key: 'limitantes_sitio_web',
-            label: '¿Qué limitantes has encontrado al usar el sitio web o aplicación del gobierno?',            
+            label: '13.1. ¿Qué limitantes has encontrado al usar el sitio web o aplicación del gobierno?',            
             options: [
               'Poco intuitiva',
               'No se entiende',
@@ -273,25 +282,41 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
             ],
             validator: { required: true }
           },
-          { key: 'otra_limitante_sitio_web', label: 'Si seleccionaste "ninguna de las anteriores", por favor escribe la que corresponda.', type: 'text', validator: { required: false } },
-          { key: 'relacionado_leyes', label: 'La limitante, ¿Tiene que ver con leyes o regulaciones?', options: ['si', 'no'], validator: { required: true } },
+          { 
+            key: 'otra_limitante_sitio_web', 
+            label: '13.2. Si seleccionaste "ninguna de las anteriores", por favor escribe la que corresponda.', 
+            type: 'text', 
+            validator: { required: false } },
+          { 
+            key: 'relacionado_leyes', 
+            label: '14. La limitante, ¿Tiene que ver con leyes o regulaciones?', 
+            options: ['si', 'no'], 
+            validator: { required: true } },
           {
             key: 'leyes_regulaciones',
-            label: 'Las leyes o regulaciones son:',            
+            label: '14.1. Las leyes o regulaciones son:',            
             options: ['Excesivas', 'Confusas', 'Repetitivas/Duplicadas'],
             validator: { required: true }
           },
-          { key: 'relacionado_tramites', label: 'La limitante a la que te enfrentas, ¿Se debe a cómo se realizan los trámites?', options: ['si', 'no'], validator: { required: true } },
+          { 
+            key: 'relacionado_tramites', 
+            label: '15. La limitante a la que te enfrentas, ¿Se debe a cómo se realizan los trámites?', 
+            options: ['si', 'no'], 
+            validator: { required: true } },
           {
             key: 'tramites',
-            label: 'La realización de los trámites es:',            
+            label: '15. La realización de los trámites es:',            
             options: ['Lenta (tardan más de lo establecido)', 'Sin seguimiento (nadie sabe dónde está el trámite)', 'No dan respuesta (ni resuelven que si, ni resuelven que no)'],
             validator: { required: true }
           },
-          { key: 'relacionado_mercado', label: 'Lo que te impide crecer, ¿Está relacionado con el mercado en el que opera tu empresa?', options: ['si', 'no'], validator: { required: true } },
+          { 
+            key: 'relacionado_mercado', 
+            label: '16. Lo que te impide crecer, ¿Está relacionado con el mercado en el que opera tu empresa?', 
+            options: ['si', 'no'], 
+            validator: { required: true } },
           {
             key: 'limitantes_mercado',
-            label: '¿Qué limitantes del mercado estás enfrentando?',            
+            label: '16.1. ¿Qué limitantes del mercado estás enfrentando?',            
             options: [
               'Falta de Financiamiento',
               'Falta de Capacitación',
@@ -305,7 +330,7 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
           },
           { key: 
             'otra_limitante_mercado', 
-            label: '10.2 En caso de escoger “otro” se abre un campo en blanco que especifique lo correspondiente', 
+            label: 'En caso de escoger “otro” se abre un campo en blanco que especifique lo correspondiente', 
             placeholder: 'EN ',
             type: 'text', 
             validator: { required: false } }
@@ -316,65 +341,32 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
       {
         title: "Sección C: Cuéntanos: ¿Cuál es la limitante recurrente de tu empresa?",
         fields: [
-          { key: 'descripcion_limitante', label: 'Explica con claridad las situaciones que constantemente han limitado el crecimiento de tu empresa.', type: 'text', validator: { required: true } },
-          { key: 'archivo_limitante', label: '¿Deseas agregar algún archivo sobre lo que escribiste? (PDF)', type: 'text', validator: { required: false } },
-          { key: 'propuesta_solucion', label: 'Qué propones para solucionar esas limitantes?', type: 'text', validator: { required: false } },
-          { key: 'archivo_propuesta', label: '¿Deseas agregar algún archivo de tu propuesta? (PDF)', type: 'text', validator: { required: false } }
+          { 
+            key: 'descripcion_limitante', 
+            label: 'Explica con claridad las situaciones que constantemente han limitado el crecimiento de tu empresa.', 
+            type: 'text', 
+            validator: { required: true } },
+          { 
+            key: 'archivo_limitante', 
+            label: '¿Deseas agregar algún archivo sobre lo que escribiste? (PDF)', 
+            type: 'text', 
+            validator: { required: false } },
+          { 
+            key: 'propuesta_solucion', 
+            label: 'Qué propones para solucionar esas limitantes?', 
+            type: 'text', 
+            validator: { required: false } },
+          { 
+            key: 'archivo_propuesta', 
+            label: '¿Deseas agregar algún archivo de tu propuesta? (PDF)', 
+            type: 'text', 
+            validator: { required: false } }
         ]
       }
     ]
   ]
 }
-/* {
-  title: 'Datos Generales',
-  fields: [
-    {
-      key: 'tipo_empresa',
-      label: 'Tipo de Empresa',
-      options: ['INDUSTRIA', 'AGROINDUSTRIA', 'COMERCIO', 'SERVICIOS', 'NO DEFINIDO'],
-    },
-    {
-      key: 'nombre',
-      label: 'Nombre Comercial',
-      type: 'text'
-    },
-    {
-      key: 'calle',
-      label: 'Calle',
-      type: 'text',
-    },
-    {
-      key: 'no_exterior',
-      label: 'No. exterior',
-      type: 'text',
-    },
-    {
-      key: 'no_interior',
-      label: 'No. Interior',
-      type: 'text',
-      defaultValue: '',
-      validator: {
-        required: false,
-      }
-    },
-    {
-      key: 'localidad',
-      label: 'Localidad',
-      type: 'text',
-    },
-    {
-      key: 'codigo_postal',
-      label: 'Codigo Postal',
-      type: 'number',
-      validator: {
-        min: 0,
-      },
-    },
-    {
-      key: 'colonia',
-      label: 'Colonia',
-      type: 'text'
-    },
+/* {  
     {
       key: 'ciudad_id',
       keyList: 'id',
@@ -515,34 +507,6 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
   ]
 },
 {
-  title: 'Datos Otros',
-  fields: [
-    {
-      key: 'inicio_operaciones',
-      label: 'Fecha Inicio Operaciones',
-      type: 'date',
-      validator:{required:false},
-    },
-    {
-      key:'fuente_informacion',
-      label:'¿Dónde te enteraste del Crédito?',
-      options:['JORNADA','OFICINA', 'PROSPECCION','REDES SOCIALES','CAMARAS',],
-      style:{
-        div:'col-12 col-sm p-3'
-      },
-      validator:{
-        required:true,
-      }
-    },
-    {
-      key: 'detalle_camara',
-      label: 'Siglas Camara',
-      type: 'text',
-      validator:{required:false},
-    },Seccion A
-  ]
-},
-{
   title: 'Actividades Economicas',
   apiUrl: 'api/negocios_actividades_economicas',
   relationKey: 'negocios_actividades_economicas',
@@ -569,7 +533,7 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
   templateUrl: './formulario-inhibidores-form.html'  
 })
 export class FormularioInhibidoresForm {
-    form = FORM_DEFINITION
+    form = JSON.parse(JSON.stringify(FORM_DEFINITION));
     conditionals: FormConditional[] = [
       // Conditionals for Section A
       { key: 'giro_principal', operator: '!==', value: 'Ninguna de las anteriores', target: 'otro_giro', targetAction: 'disabled' },
@@ -585,4 +549,28 @@ export class FormularioInhibidoresForm {
       { key: 'relacionado_mercado', operator: '!==', value: 'si', target: 'limitantes_mercado', targetAction: 'disabled' },
       { key: 'limitantes_mercado', operator: '!==', value: 'Otro', target: 'otra_limitante_mercado', targetAction: 'disabled' },
     ];
+    currentSection = 0;
+    isSectionValid = false;
+
+    nextSection() {
+        if (this.isSectionValid) {
+            if (this.currentSection < this.form.forms.length - 1) {
+                this.currentSection++;
+                this.isSectionValid = false; // Reset for the new section
+            } else {
+                this.submitForm();
+            }
+        }
+    }
+
+    previousSection() {
+        if (this.currentSection > 0) {
+            this.currentSection--;
+            this.isSectionValid = false; 
+        }
+    }
+
+    submitForm() {
+        // Logic to submit the whole form will be implemented here
+    }
 }
