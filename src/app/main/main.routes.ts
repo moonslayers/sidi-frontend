@@ -14,5 +14,10 @@ export const mainRoutes: Routes = [
     path: 'usuarios',
     title: 'Usuarios',
     loadChildren: () => import('./usuarios/usuarios.routes').then(m => m.usuariosRoutes)
+  },
+  {
+    path: 'formulario',
+    title: 'Formulario',
+    loadChildren: () => import('./formulario-inhibidores/formulario-inhibidores.routes').then(m => m.formularioInhibidoresRoutes)
   }
 ]
