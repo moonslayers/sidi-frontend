@@ -431,79 +431,7 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
         min: 0,
       },
       type: 'number'
-    },
-    {
-      key: 'empleos_informales_hombres',
-      label: 'Empleos Informales Hombres',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
-    {
-      key: 'empleos_informales_no_binarios',
-      label: 'Empleos Informales No Binarios',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
-    {
-      key: 'empleos_imss_mujeres',
-      label: 'Empleos IMSS Mujeres',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
-    {
-      key: 'empleos_imss_hombres',
-      label: 'Empleos IMSS Hombres',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
-    {
-      key: 'empleos_imss_no_binarios',
-      label: 'Empleos IMSS No Binarios',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
-    {
-      key: 'empleos_a_generar_mujeres',
-      label: 'Empleos a generar Mujeres',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
-    {
-      key: 'empleos_a_generar_hombres',
-      label: 'Empleos a generar Hombres',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
-    {
-      key: 'empleos_a_generar_no_binarios',
-      label: 'Empleos a generar No Binarios',
-      defaultValue: 0,
-      validator: {
-        min: 0,
-      },
-      type: 'number'
-    },
+    },    
   ]
 },
 {
@@ -536,7 +464,10 @@ export class FormularioInhibidoresForm {
     form = JSON.parse(JSON.stringify(FORM_DEFINITION));
     conditionals: FormConditional[] = [
       // Conditionals for Section A
-      { key: 'giro_principal', operator: '!==', value: 'Ninguna de las anteriores', target: 'otro_giro', targetAction: 'disabled' },
+      { 
+        key: 'giro_principal', operator: '!==', value: 'Ninguna de las anteriores', target: 'otro_giro', targetAction: 'disabled' },
+      { key: 'giro_principal', operator: '===', value: 'Ninguna de las anteriores', target: 'otro_giro', targetAction: 'require' },
+      { key: 'giro_principal', operator: '!==', value: 'Ninguna de las anteriores', target: 'otro_giro', targetAction: 'unrequire' },
       { key: 'es_miembro_asociacion', operator: '!==', value: 'si', target: 'asociacion', targetAction: 'disabled' },
       { key: 'asociacion', operator: '!==', value: 'Ninguna de las anteriores', target: 'otra_asociacion', targetAction: 'disabled' },
 

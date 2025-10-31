@@ -20,7 +20,7 @@ export interface FormConditional {
   operator: '==' | '===' | '!=' | '!==' | '<' | '<=' | '>' | '>=';
   value: string | undefined | null;
   target: string;
-  targetAction: 'hide' | 'unhide' | 'disabled';
+  targetAction: 'hide' | 'unhide' | 'disabled' | 'require' | 'unrequire';
 }
 
 export type GenericRecord = Record<string, unknown>;
@@ -301,6 +301,7 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
    */
   ngOnInit(): void {
     console.log(this.form);
+    this.setIsValid();
   }
 
   // Helper methods for template type safety
@@ -381,6 +382,35 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
     this.setValuesFromEdit()
   }
 
+  private isConditionallyRequired(field: FormElement): boolean | undefined {
+    if (!this.conditionals.length || !field.key) return undefined;
+
+    const requireConditional = this.conditionals.find(c => c.target === field.key && c.targetAction === 'require');
+    const unrequireConditional = this.conditionals.find(c => c.target === field.key && c.targetAction === 'unrequire');
+
+    if (requireConditional) {
+        const main = this.fieldTypes.getFormFieldByKey(this.form, requireConditional.key);
+        if (main) {
+            const evaluator = this.operatorFunctions[requireConditional.operator];
+            if (evaluator(requireConditional.value, main.value)) {
+                return true; // Condition to be required is met
+            }
+        }
+    }
+
+    if (unrequireConditional) {
+        const main = this.fieldTypes.getFormFieldByKey(this.form, unrequireConditional.key);
+        if (main) {
+            const evaluator = this.operatorFunctions[unrequireConditional.operator];
+            if (evaluator(unrequireConditional.value, main.value)) {
+                return false; // Condition to be not required is met
+            }
+        }
+    }
+
+    return undefined; // No active conditional
+  }
+
   /**
    * Evaluates the visibility and disabled state of form elements based on conditional logic.
    *
@@ -398,10 +428,35 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
         formElement.hidden = this.isGroupHidden(formElement)
         for (const field of formElement.fields) {
           field.hidden = this.isHidden(field);
-          field.validator = {
-            ...field.validator ?? {},
-            disabled: this.disabled === true ? true : this.isDisabled(field),
-          };
+
+          const conditionalRequired = this.isConditionallyRequired(field);
+          const newValidator = { ...(field.validator ?? {}) };
+
+          if (conditionalRequired !== undefined) {
+            newValidator.required = conditionalRequired;
+          }
+          const isNowDisabled = this.disabled === true ? true : this.isDisabled(field);
+          newValidator.disabled = isNowDisabled;
+
+          field.validator = newValidator;
+          if (isNowDisabled) {
+            field.valid = true;
+          }
+        }
+      } else if (this.fieldTypes.isFormField(formElement)) {
+        const field = formElement;
+        const conditionalRequired = this.isConditionallyRequired(field);
+        const newValidator = { ...(field.validator ?? {}) };
+
+        if (conditionalRequired !== undefined) {
+          newValidator.required = conditionalRequired;
+        }
+        const isNowDisabled = this.disabled === true ? true : this.isDisabled(field);
+        newValidator.disabled = isNowDisabled;
+
+        field.validator = newValidator;
+        if (isNowDisabled) {
+          field.valid = true;
         }
       }
 
@@ -670,7 +725,8 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
       this.formChange.emit(this.form);
       this.setValues();
       this.checkConditionals();
-      this.setIsValid();
+      // Defer the validity check to allow child components to update first
+      setTimeout(() => this.setIsValid(), 0);
     }
   }
 
