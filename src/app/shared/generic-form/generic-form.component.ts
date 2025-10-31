@@ -402,7 +402,6 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
             ...field.validator ?? {},
             disabled: this.disabled === true ? true : this.isDisabled(field),
           };
-          field.valid = true;
         }
       }
 
