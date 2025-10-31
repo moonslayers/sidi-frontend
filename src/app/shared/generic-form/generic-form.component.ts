@@ -426,11 +426,12 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
 
       if (this.fieldTypes.isFormGroup(formElement)) {
         formElement.hidden = this.isGroupHidden(formElement)
-        for (const field of formElement.fields) {
+        for (const [index, field] of formElement.fields.entries()) {
           field.hidden = this.isHidden(field);
 
           const conditionalRequired = this.isConditionallyRequired(field);
           const newValidator = { ...(field.validator ?? {}) };
+          const wasDisabled = newValidator.disabled === true;
 
           if (conditionalRequired !== undefined) {
             newValidator.required = conditionalRequired;
@@ -439,14 +440,20 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
           newValidator.disabled = isNowDisabled;
 
           field.validator = newValidator;
-          if (isNowDisabled) {
-            field.valid = true;
+          if (wasDisabled && !isNowDisabled) {
+            // Was disabled, now enabled -> force re-validation by resetting valid status and object reference
+            field.valid = undefined;
+            formElement.fields[index] = { ...field };
+          } else if (isNowDisabled) {
+              // Is disabled -> force valid status
+              field.valid = true;
           }
         }
       } else if (this.fieldTypes.isFormField(formElement)) {
         const field = formElement;
         const conditionalRequired = this.isConditionallyRequired(field);
         const newValidator = { ...(field.validator ?? {}) };
+        const wasDisabled = newValidator.disabled === true;
 
         if (conditionalRequired !== undefined) {
           newValidator.required = conditionalRequired;
@@ -455,8 +462,16 @@ export class GenericFormComponent<T = unknown> implements OnInit, OnChanges {
         newValidator.disabled = isNowDisabled;
 
         field.validator = newValidator;
-        if (isNowDisabled) {
-          field.valid = true;
+        if (wasDisabled && !isNowDisabled) {
+          // Was disabled, now enabled -> force re-validation by resetting valid status and object reference
+          field.valid = undefined;
+          const fieldIndex = this.form.indexOf(field);
+          if (fieldIndex > -1) {
+            this.form[fieldIndex] = { ...field };
+          }
+        } else if (isNowDisabled) {
+            // Is disabled -> force valid status
+            field.valid = true;
         }
       }
 

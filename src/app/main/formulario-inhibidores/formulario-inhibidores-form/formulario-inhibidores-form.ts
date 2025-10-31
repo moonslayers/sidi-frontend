@@ -259,8 +259,7 @@ const FORM_DEFINITION: FormularioInhibidoresFormDefinition =
           { 
             key: 'nivel_gobierno', 
             label: '12. ¿Sabes con cuál nivel de gobierno está relacionada tu limitante?',             
-            options: ['Federal', 'Estatal', 'Municipal', 'No sé'],
-            validator: { required: true } 
+            options: ['Federal', 'Estatal', 'Municipal', 'No sé'] 
           },
           { 
             key: 'relacionado_sitio_web', 
@@ -469,12 +468,20 @@ export class FormularioInhibidoresForm {
       { key: 'giro_principal', operator: '===', value: 'Ninguna de las anteriores', target: 'otro_giro', targetAction: 'require' },
       { key: 'giro_principal', operator: '!==', value: 'Ninguna de las anteriores', target: 'otro_giro', targetAction: 'unrequire' },
       { key: 'es_miembro_asociacion', operator: '!==', value: 'si', target: 'asociacion', targetAction: 'disabled' },
+      { key: 'es_miembro_asociacion', operator: '===', value: 'si', target: 'asociacion', targetAction: 'require' },
+      { key: 'es_miembro_asociacion', operator: '!==', value: 'si', target: 'asociacion', targetAction: 'unrequire' },
       { key: 'asociacion', operator: '!==', value: 'Ninguna de las anteriores', target: 'otra_asociacion', targetAction: 'disabled' },
+      { key: 'asociacion', operator: '===', value: 'Ninguna de las anteriores', target: 'otra_asociacion', targetAction: 'require' },
+      { key: 'asociacion', operator: '!==', value: 'Ninguna de las anteriores', target: 'otra_asociacion', targetAction: 'unrequire' },
 
       // Conditionals for Section B
       { key: 'relacionado_gobierno', operator: '!==', value: 'si', target: 'nivel_gobierno', targetAction: 'disabled' },
+      { key: 'relacionado_gobierno', operator: '===', value: 'si', target: 'nivel_gobierno', targetAction: 'require' },
+      { key: 'relacionado_gobierno', operator: '!==', value: 'si', target: 'nivel_gobierno', targetAction: 'unrequire' },
       { key: 'relacionado_sitio_web', operator: '!==', value: 'si', target: 'limitantes_sitio_web', targetAction: 'disabled' },
       { key: 'limitantes_sitio_web', operator: '!==', value: 'Ninguna de las anteriores', target: 'otra_limitante_sitio_web', targetAction: 'disabled' },
+      { key: 'limitantes_sitio_web', operator: '===', value: 'Ninguna de las anteriores', target: 'otra_limitante_sitio_web', targetAction: 'require' },
+      { key: 'limitantes_sitio_web', operator: '!==', value: 'Ninguna de las anteriores', target: 'otra_limitante_sitio_web', targetAction: 'unrequire' },
       { key: 'relacionado_leyes', operator: '!==', value: 'si', target: 'leyes_regulaciones', targetAction: 'disabled' },
       { key: 'relacionado_tramites', operator: '!==', value: 'si', target: 'tramites', targetAction: 'disabled' },
       { key: 'relacionado_mercado', operator: '!==', value: 'si', target: 'limitantes_mercado', targetAction: 'disabled' },
